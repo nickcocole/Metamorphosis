@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.metamorphosis.controller.CreditosController">
+    <stylesheets>
+        <URL value="@/styles/creditos.css"/>
+    </stylesheets>
+
+    <children>
+        <Label layoutX="250.0" layoutY="50.0" text="Créditos"/>
+
+        <Label layoutX="200.0" layoutY="120.0" text="Arte: Felipe Caramel"/>
+
+        <Label layoutX="200.0" layoutY="160.0" text="Código: Nicole Borges"/>
+
+        <Label layoutX="200.0" layoutY="200.0" text="Orientação: Mateus Amado"/>
+
+        <Button fx:id="creditos"
+                layoutX="200.0"
+                layoutY="300.0"
+                text="Voltar ao menu Principal"
+                onAction="#voltar"/>
+    </children>
+</AnchorPane>
+
