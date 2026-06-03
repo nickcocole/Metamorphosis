@@ -3,7 +3,6 @@ module com.mycompany.metamorphosis {
     requires javafx.fxml;
     requires java.base;
     requires java.sql;
-    requires org.postgresql.jdbc;
     
     opens com.mycompany.metamorphosis to javafx.fxml;
     opens com.mycompany.metamorphosis.controller to javafx.fxml;
