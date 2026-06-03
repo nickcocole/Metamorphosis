@@ -7,22 +7,32 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TableView fx:id="tableRanking"
-           prefHeight="400"
-           prefWidth="300"
-           xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.mycompany.metamorphosis.controller.RankingController">
 
-    <columns>
 
-        <TableColumn fx:id="colNome"
-                     text="Nome"
-                     prefWidth="150"/>
+<VBox spacing="10"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.mycompany.metamorphosis.controller.RankingController">
 
-        <TableColumn fx:id="colPontos"
-                     text="Pontos"
-                     prefWidth="150"/>
+    <TableView fx:id="tableRanking"
+               prefHeight="400"
+               prefWidth="300">
 
-    </columns>
+        <columns>
 
-</TableView>
+            <TableColumn fx:id="colNome"
+                         text="Nome"
+                         prefWidth="150"/>
+
+            <TableColumn fx:id="colPontos"
+                         text="Pontos"
+                         prefWidth="150"/>
+
+        </columns>
+
+    </TableView>
+
+    <Button fx:id="voltaraomenuprincipal"
+            text="Voltar ao Menu Principal"
+            onAction="#voltarAoMenuPrincipal"/>
+
+</VBox>
