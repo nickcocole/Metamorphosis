@@ -23,25 +23,25 @@ public class GameplayController {
     private void abrirInventario() throws IOException {
         
         try {
-            // 1. Carregar o FXML do inventário
+            // 1. Carrega o FXML do inventário
             FXMLLoader loader = new FXMLLoader(
             getClass().getResource("/com/mycompany/metamorphosis/inventario.fxml")
             );
             Parent root = loader.load();
                        
-            // 2. Pegar o controller do inventário
+            // 2. Pega o controller do inventário
              InventarioController invCtrl = loader.getController();
                          
-             // 3. Passar os dados do jogador
+             // 3. Passa os dados do jogador
              //invCtrl.setDados(nomeJogador, vida, vidaMax, ouro, listaDeItens);
                          
-             // 4. Criar o novo Stage (nova janela)
+             // 4. Cria o novo Stage (nova janela)
              Stage invStage = new Stage();
              invStage.setTitle("Inventario");
              invStage.setScene(new Scene(root));
              invStage.setResizable(false);
              
-             // 5. Bloquear o jogo e abrir
+             // 5. Bloquea o jogo e abrir
              invStage.initModality(Modality.APPLICATION_MODAL);
              invStage.showAndWait();
              } 
