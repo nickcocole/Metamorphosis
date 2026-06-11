@@ -12,10 +12,16 @@
             <Image url="@../../../stages/background.png" />
          </image>
       </ImageView>
-
-                      <Button fx:id="ranking" layoutX="927.0" layoutY="674.0" onAction="#ranking" text="Ranking" />
-
-                      <Button fx:id="creditos" layoutX="925.0" layoutY="757.0" onAction="#creditos" text="Créditos" />
+      <ImageView fx:id="btnRanking" fitHeight="77.0" fitWidth="337.0" layoutX="792.0" layoutY="564.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../stages/rankingnormal.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="btnCreditos" fitHeight="77.0" fitWidth="337.0" layoutX="792.0" layoutY="564.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../stages/creditosnormal.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="btnJogar" fitHeight="77.0" fitWidth="337.0" layoutX="792.0" layoutY="564.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../stages/jogarnormal.png" />

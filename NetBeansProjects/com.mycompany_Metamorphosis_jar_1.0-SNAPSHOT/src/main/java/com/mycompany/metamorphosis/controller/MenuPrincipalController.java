@@ -95,12 +95,124 @@ public class MenuPrincipalController {
             }
         });
         
+        // Carrega as imagens
+        rankingNormal = new Image(
+                getClass().getResourceAsStream("/stages/rankingnormal.png"));
+
+        rankingPressionado = new Image(
+                getClass().getResourceAsStream("/stages/rankingpressionado.png"));
+
+        // Define a imagem inicial
+        btnRanking.setImage(rankingNormal);
+
+        // Guarda os valores originais
+        double larguraOriginalRanking = btnRanking.getFitWidth();
+        double alturaOriginalRanking = btnRanking.getFitHeight();
+
+        double xOriginalRanking = btnRanking.getLayoutX();
+        double yOriginalRanking = btnRanking.getLayoutY();
+
+        // Mouse entrou no botão
+        btnRanking.setOnMouseEntered(e -> {
+
+            btnRanking.setFitWidth(larguraOriginalRanking + 2);
+            btnRanking.setFitHeight(alturaOriginalRanking + 2);
+
+            btnRanking.setLayoutX(xOriginalRanking - 1);
+            btnRanking.setLayoutY(yOriginalRanking - 1);
+        });
+
+        // Mouse saiu do botão
+        btnRanking.setOnMouseExited(e -> {
+
+            btnRanking.setFitWidth(larguraOriginalRanking);
+            btnRanking.setFitHeight(alturaOriginalRanking);
+
+            btnRanking.setLayoutX(xOriginalRanking);
+            btnRanking.setLayoutY(yOriginalRanking);
+
+            btnRanking.setImage(rankingNormal);
+        });
+
+        // Botão pressionado
+        btnRanking.setOnMousePressed(e ->
+                btnRanking.setImage(rankingPressionado)
+        );
+
+        // Botão solto
+        btnRanking.setOnMouseReleased(e -> {
+
+            btnRanking.setImage(rankingNormal);
+
+                    try {
+                        ranking();
+                    } catch (IOException ex) {
+                        Logger.getLogger(MenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+        });
+        
+        // Carrega as imagens
+        creditosNormal = new Image(
+                getClass().getResourceAsStream("/stages/creditosnormal.png"));
+
+        creditosPressionado = new Image(
+                getClass().getResourceAsStream("/stages/creditospressionado.png"));
+
+        // Define a imagem inicial
+        btnCreditos.setImage(creditosNormal);
+
+        // Guarda os valores originais
+        double larguraOriginalCreditos = btnCreditos.getFitWidth();
+        double alturaOriginalCreditos = btnCreditos.getFitHeight();
+
+        double xOriginalCreditos = btnCreditos.getLayoutX();
+        double yOriginalCreditos = btnCreditos.getLayoutY();
+
+        // Mouse entrou no botão
+        btnCreditos.setOnMouseEntered(e -> {
+
+            btnCreditos.setFitWidth(larguraOriginalCreditos + 2);
+            btnCreditos.setFitHeight(alturaOriginalCreditos + 2);
+
+            btnCreditos.setLayoutX(xOriginalCreditos - 1);
+            btnCreditos.setLayoutY(yOriginalCreditos - 1);
+        });
+
+        // Mouse saiu do botão
+            btnCreditos.setOnMouseExited(e -> {
+
+            btnCreditos.setFitWidth(larguraOriginalCreditos);
+            btnCreditos.setFitHeight(alturaOriginalCreditos);
+
+            btnCreditos.setLayoutX(xOriginalCreditos);
+            btnCreditos.setLayoutY(yOriginalCreditos);
+
+            btnCreditos.setImage(creditosNormal);
+        });
+
+        // Botão pressionado
+        btnCreditos.setOnMousePressed(e ->
+                btnCreditos.setImage(creditosPressionado)
+        );
+
+        // Botão solto
+        btnCreditos.setOnMouseReleased(e -> {
+
+            btnCreditos.setImage(creditosNormal);
+
+                    try {
+                        creditos();
+                    } catch (IOException ex) {
+                        Logger.getLogger(MenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+        });
+        
                 // Carrega as imagens
         sairNormal = new Image(
                 getClass().getResourceAsStream("/stages/sairnormal.png"));
 
-        //sairPressionado = new Image(
-                //getClass().getResourceAsStream("/stages/sairpressionado.png"));
+        sairPressionado = new Image(
+                getClass().getResourceAsStream("/stages/sairpressionado.png"));
 
         // Define a imagem inicial
         btnSair.setImage(sairNormal);
@@ -135,9 +247,9 @@ public class MenuPrincipalController {
         });
 
         // Botão pressionado
-        /*btnSair.setOnMousePressed(e ->
+        btnSair.setOnMousePressed(e ->
                 btnSair.setImage(sairPressionado)
-        );*/
+        );
 
         // Botão solto
         btnSair.setOnMouseReleased(e -> {
