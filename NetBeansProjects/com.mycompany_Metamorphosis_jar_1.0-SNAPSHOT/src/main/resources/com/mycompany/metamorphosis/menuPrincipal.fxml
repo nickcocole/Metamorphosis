@@ -3,6 +3,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 
 <AnchorPane style="-fx-background-image: url('/stages/background.png'); -fx-background-size: cover;" stylesheets="@../styles/menuprincipal.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.metamorphosis.controller.MenuPrincipalController">
    <children>
@@ -31,5 +32,6 @@
             <Image url="@../../../stages/sairnormal.png" />
          </image>
       </ImageView>
+      <Rectangle fx:id="fade" width="1920" height="1080" opacity="0" mouseTransparent="true" style="-fx-fill: black;" />
    </children>
 </AnchorPane>

@@ -4,9 +4,12 @@ import com.mycompany.metamorphosis.App;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 public class MenuPrincipalController {
     
@@ -21,6 +24,8 @@ public class MenuPrincipalController {
     private ImageView btnRanking;
     @FXML
     private ImageView btnCreditos;
+    @FXML
+    private Rectangle fade;
 
     private Image jogarNormal;
     private Image jogarPressionado;
@@ -38,6 +43,11 @@ public class MenuPrincipalController {
 
     @FXML
     public void initialize() {
+        
+        FadeTransition transicao = new FadeTransition(Duration.seconds(1), fade);
+        
+        transicao.setFromValue(0);
+        transicao.setToValue(1);
 
         // Carrega as imagens
         jogarNormal = new Image(
@@ -87,12 +97,23 @@ public class MenuPrincipalController {
         btnJogar.setOnMouseReleased(e -> {
 
             btnJogar.setImage(jogarNormal);
-
-            try {
-                jogar();
-            } catch (IOException ex) {
-                Logger.getLogger(MenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+            transicao.setOnFinished(eh -> {
+            
+                try {
+                    
+                    jogar();
+                    
+                } catch (IOException ex) {
+                    
+                    Logger.getLogger(MenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                    
+                }
+            
+            });
+            
+            transicao.play();
+            
         });
         
         // Carrega as imagens
@@ -254,15 +275,24 @@ public class MenuPrincipalController {
         // Botão solto
         btnSair.setOnMouseReleased(e -> {
 
-            btnSair.setImage(sairNormal);
-
-                    try {
-                        encerrar();
-                    } catch (IOException ex) {
-                        Logger.getLogger(MenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-        });
+            transicao.setOnFinished(eh -> {
+            
+                try {
+                    
+                    encerrar();
+                    
+                } catch (IOException ex) {
+                    
+                    Logger.getLogger(MenuPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                    
+                }
+            
+            });
+            
+            transicao.play();
         
+        });
+                
     }
 
     @FXML
