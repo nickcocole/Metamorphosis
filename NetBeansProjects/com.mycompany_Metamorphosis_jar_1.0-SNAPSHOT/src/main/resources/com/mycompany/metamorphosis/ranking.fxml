@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<TableView fx:id="tableRanking"
+           prefHeight="400"
+           prefWidth="300"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.mycompany.metamorphosis.controller.RankingController">
+
+    <columns>
+
+        <TableColumn fx:id="colNome"
+                     text="Nome"
+                     prefWidth="150"/>
+
+        <TableColumn fx:id="colPontos"
+                     text="Pontos"
+                     prefWidth="150"/>
+
+    </columns>
+
+</TableView>
