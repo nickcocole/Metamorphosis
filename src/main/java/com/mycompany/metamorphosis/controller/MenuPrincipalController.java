@@ -116,6 +116,8 @@ public class MenuPrincipalController {
             
         });
         
+        //teste1
+        
         // Carrega as imagens
         rankingNormal = new Image(
                 getClass().getResourceAsStream("/stages/rankingnormal.png"));
