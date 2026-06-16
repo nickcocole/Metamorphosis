@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.mycompany.metamorphosis.controller.FimDeJogoController"
+           style="-fx-background-color: #0d0d1a;"
+           prefWidth="1280" prefHeight="720">
+
+    <!-- Fundo estrelado decorativo -->
+    <VBox alignment="CENTER" spacing="30">
+        <padding><Insets top="40" bottom="40" left="60" right="60"/></padding>
+
+        <!-- Título -->
+        <Label fx:id="lblTitulo" text="✨ Parabéns, Alquimista! ✨"
+               style="-fx-font-size: 38px; -fx-text-fill: #f0c040;
+                      -fx-font-weight: bold;
+                      -fx-effect: dropshadow(gaussian, #ffaa00, 18, 0.6, 0, 0);"/>
+
+        <!-- Personagem + diálogo -->
+        <HBox alignment="CENTER" spacing="24">
+
+            <ImageView fx:id="imgLayla"
+                       fitWidth="120" fitHeight="120"
+                       preserveRatio="true"/>
+
+            <VBox spacing="8" maxWidth="600">
+                <Label text="Layla"
+                       style="-fx-text-fill: #f0c040; -fx-font-size: 15px;
+                              -fx-font-weight: bold;"/>
+                <Label fx:id="lblFalaLayla"
+                       wrapText="true"
+                       style="-fx-text-fill: #eeeeee; -fx-font-size: 15px;
+                              -fx-background-color: #1a0a2e;
+                              -fx-background-radius: 10;
+                              -fx-padding: 14 18 14 18;
+                              -fx-border-color: #9b59b6;
+                              -fx-border-radius: 10;
+                              -fx-border-width: 1.5;"
+                       maxWidth="580"/>
+            </VBox>
+        </HBox>
+
+        <!-- Pontuação -->
+        <VBox alignment="CENTER" spacing="6"
+              style="-fx-background-color: #1a0a2e; -fx-background-radius: 12;
+                     -fx-border-color: #f0c040; -fx-border-radius: 12;
+                     -fx-border-width: 2; -fx-padding: 20 50 20 50;">
+            <Label text="Pontuação Final"
+                   style="-fx-text-fill: #aaaaaa; -fx-font-size: 14px;"/>
+            <Label fx:id="lblNomeJogador" text=""
+                   style="-fx-text-fill: #ccaaff; -fx-font-size: 17px;"/>
+            <Label fx:id="lblPontuacao" text="0"
+                   style="-fx-text-fill: #50fa7b; -fx-font-size: 48px;
+                          -fx-font-weight: bold;
+                          -fx-effect: dropshadow(gaussian, #50fa7b, 10, 0.4, 0, 0);"/>
+            <Label text="pontos"
+                   style="-fx-text-fill: #888888; -fx-font-size: 13px;"/>
+        </VBox>
+
+        <!-- Botões -->
+        <HBox alignment="CENTER" spacing="20">
+            <Button text="🏆 Ver Ranking" onAction="#verRanking"
+                    style="-fx-background-color: #f0c040; -fx-text-fill: #0d0d1a;
+                           -fx-font-size: 15px; -fx-font-weight: bold;
+                           -fx-cursor: hand; -fx-background-radius: 8;
+                           -fx-padding: 12 32 12 32;"/>
+            <Button text="↩ Menu Principal" onAction="#voltarMenu"
+                    style="-fx-background-color: #2d1b4e; -fx-text-fill: white;
+                           -fx-font-size: 14px; -fx-cursor: hand;
+                           -fx-background-radius: 8; -fx-padding: 12 32 12 32;
+                           -fx-border-color: #9b59b6; -fx-border-radius: 8;"/>
+        </HBox>
+    </VBox>
+</StackPane>

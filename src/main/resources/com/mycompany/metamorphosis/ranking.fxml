@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="16" alignment="CENTER"
+      style="-fx-background-color: #0d0d1a; -fx-padding: 40;"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.mycompany.metamorphosis.controller.RankingController">
+
+    <Label text="🏆 Ranking de Alquimistas"
+           style="-fx-font-size: 24px; -fx-text-fill: #f0c040; -fx-font-weight: bold;"/>
+
+    <TableView fx:id="tableRanking" prefHeight="420" prefWidth="480"
+               style="-fx-background-color: #1a0a2e; -fx-table-cell-border-color: #3d2060;">
+        <columns>
+            <TableColumn fx:id="colNome"   text="Jogador" prefWidth="240"/>
+            <TableColumn fx:id="colPontos" text="Pontos"  prefWidth="160"/>
+        </columns>
+    </TableView>
+
+    <Button text="← Voltar ao Menu" onAction="#voltarAoMenuPrincipal"
+            style="-fx-background-color: #6c3483; -fx-text-fill: white;
+                   -fx-font-size: 14px; -fx-cursor: hand; -fx-background-radius: 8;
+                   -fx-padding: 8 24 8 24;"/>
+</VBox>

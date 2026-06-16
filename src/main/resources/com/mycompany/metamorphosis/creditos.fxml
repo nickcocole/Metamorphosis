@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="1920" prefWidth="1080" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/26" fx:controller="com.mycompany.metamorphosis.controller.CreditosController">
+    <stylesheets>
+        <URL value="@/styles/creditos.css"/>
+    </stylesheets>
+    
+        <ImageView fx:id="backgroundcreditos" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../stages/backgroundcreditos.png" />
+         </image>
+        </ImageView>
+
+        <VBox fx:id="vbox"
+              alignment="CENTER"
+              spacing="20.0"
+              layoutX="0.0"
+              layoutY="1130"
+              prefWidth="1920.0">
+        <children>
+
+        <Label fx:id="lblCreditos"
+                       text="Créditos"
+                       style="-fx-text-fill: white;">
+                    <font>
+                        <Font name="Pixellari" size="50.0" />
+                    </font>
+        </Label>
+
+        <Label fx:id="l1"
+                       text="Artes e Animações: Felipe Caramel"
+                       style="-fx-text-fill: white;">
+                    <font>
+                        <Font name="Pixellari" size="24.0" />
+                    </font>
+        </Label>
+
+               <Label fx:id="l2"
+                       text="Código: Nicole Borges"
+                       style="-fx-text-fill: white;">
+                    <font>
+                        <Font name="Pixellari" size="24.0" />
+                    </font>
+                </Label>
+
+                <Label fx:id="l3"
+                       text="Orientação: Mateus Amado"
+                       style="-fx-text-fill: white;">
+                    <font>
+                        <Font name="Pixellari" size="24.0" />
+                    </font>
+                </Label>
+                <Label fx:id="l4"
+                       text="Fonte: Daniel Linssen"
+                       style="-fx-text-fill: white;">
+                    <font>
+                        <Font name="Pixellari" size="24.0" />
+                    </font>
+                </Label>
+                
+                <ImageView fx:id="btnSair" fitHeight="77.0" fitWidth="337.0" layoutX="792.0" layoutY="816.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../stages/sairnormal.png" />
+                    </image>
+                </ImageView>
+
+            </children>
+
+        </VBox>
+        
+</AnchorPane>
+
