@@ -423,25 +423,5 @@ public class GameplayController {
         App.setRoot("menuPrincipal");
     }
 
-    @FXML
-    private void abrirInventario() {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/com/mycompany/metamorphosis/inventario.fxml"));
-            Parent root = loader.load();
-
-            InventarioController invCtrl = loader.getController();
-            invCtrl.carregarItens(
-                GerenciadorDeJogo.getInstance().getInventario().getItens());
-
-            Stage stage = new Stage();
-            stage.setTitle("Inventário");
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+ 
 }
