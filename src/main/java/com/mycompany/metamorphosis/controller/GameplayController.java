@@ -55,22 +55,22 @@ public class GameplayController {
 
     // ── Diálogos das fases ─────────────────────────────────────────────────
     private static final String DIALOGO_FASE1 =
-        "Olá, alquimista! Sou Layla, a cigana das estrelas. " +
+        "Olá, transmorfo! Sou Layla, a cigana das estrelas. " +
         "Preciso urgentemente de um CALDEIRÃO para preparar minha poção. " +
         "Combine os elementos e traga-me o que peço... o destino depende disso! 🔮";
 
     private static final String DIALOGO_FASE2 =
-        "GRRR! Eu sou Nilipe, e estou FAMINTO! " +
-        "Me traga uma AVE ASSADA e um PESCADO ASSADO agora mesmo... " +
-        "ou vou devorar seus elementos! 👾";
+        "¡GRRR! ¡Soy Nilipe y estoy HAMBRIENTO! " +
+        "Tráeme una AVE ASADA y un PESCADO ASADO ahora mismo..." +
+        "¡o devoraré tus elementos! 👾";
 
     private static final String DIALOGO_FASE3_LAYLA =
         "Meu pai se foi... Preciso preparar seu velório com dignidade. " +
         "Faça o CAIXÃO, reúna a FAMÍLIA e monte o BUQUÊ de despedida. 🕯️";
 
     private static final String DIALOGO_FASE3_NILIPE =
-        "Ainda estou aqui! E com MAIS FOME que antes! " +
-        "Vou roubar seus itens até você terminar... se conseguir! 😈";
+        "¡Sigo aquí! ¡Y con MÁS HAMBRE que antes! " +
+        "Voy a robar tus ítems hasta que termines... ¡si es que puedes! 😈";
 
     // ── Timer do Boss ──────────────────────────────────────────────────────
     private Timeline timerBoss;
