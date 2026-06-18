@@ -48,6 +48,10 @@ public class GameplayController {
     @FXML private Label     lblComboTitulo;
     @FXML private Label     lblComboNome;
     @FXML private Label     lblComboPontos;
+    private double mouseXInicial;
+    private double mouseYInicial;
+    private double cardXInicial;
+    private double cardYInicial;
 
     // ── Estado interno do drag ─────────────────────────────────────────────
     private StackPane elementoArrastado = null;
@@ -178,17 +182,24 @@ public class GameplayController {
 
         card.setOnMousePressed(e -> {
             elementoArrastado = card;
-            dragOffsetX = e.getX();
-            dragOffsetY = e.getY();
+
+            mouseXInicial = e.getSceneX();
+            mouseYInicial = e.getSceneY();
+
+            cardXInicial = AnchorPane.getLeftAnchor(card);
+            cardYInicial = AnchorPane.getTopAnchor(card);
+
             card.toFront();
         });
 
         card.setOnMouseDragged(e -> {
             if (elementoArrastado == null) return;
-            double novoX = AnchorPane.getLeftAnchor(card) + e.getX() - dragOffsetX;
-            double novoY = AnchorPane.getTopAnchor(card)  + e.getY() - dragOffsetY;
-            AnchorPane.setLeftAnchor(card, novoX);
-            AnchorPane.setTopAnchor(card,  novoY);
+
+            double dx = e.getSceneX() - mouseXInicial;
+            double dy = e.getSceneY() - mouseYInicial;
+
+            AnchorPane.setLeftAnchor(card, cardXInicial + dx);
+            AnchorPane.setTopAnchor(card, cardYInicial + dy);
         });
 
         card.setOnMouseReleased(e -> {
@@ -423,5 +434,9 @@ public class GameplayController {
         App.setRoot("menuPrincipal");
     }
 
- 
+    @FXML
+    private void abrirInventario() {
+        System.out.println("Inventário aberto!");
+    }
+    
 }
