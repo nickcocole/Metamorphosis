@@ -6,18 +6,14 @@ import com.mycompany.metamorphosis.model.Item;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,8 +23,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 public class GameplayController {
@@ -88,7 +83,13 @@ public class GameplayController {
         atualizarHUD();
         carregarElementosNaBarraLateral();
         iniciarFase();
+        Font.loadFont(
+        getClass().getResourceAsStream("/styles/m5x7.ttf"),
+        16
+        );
     }
+    
+    
 
     // ── HUD ────────────────────────────────────────────────────────────────
     private void atualizarHUD() {
@@ -103,10 +104,11 @@ public class GameplayController {
         painelObjetivos.getChildren().clear();
         GerenciadorDeJogo g = GerenciadorDeJogo.getInstance();
         for (String obj : g.getObjetivosFaseAtual()) {
+            
             boolean feito = g.getInventario().possui(obj);
             Label lbl = new Label((feito ? "✅ " : "⬜ ") + obj);
             lbl.setStyle("-fx-text-fill: " + (feito ? "#50fa7b" : "#dddddd") +
-                         "; -fx-font-size: 12px;");
+                         "; -fx-font-size: 24px; -fx-font-family: 'm5x7';");
             painelObjetivos.getChildren().add(lbl);
         }
     }
@@ -123,9 +125,10 @@ public class GameplayController {
     private StackPane criarCartaoElemento(Item item, boolean naBarraLateral) {
         // Ícone
         ImageView img = new ImageView();
-        img.setFitWidth(40);
-        img.setFitHeight(40);
+        img.setFitWidth(55);
+        img.setFitHeight(55);
         img.setPreserveRatio(true);
+        
         try {
             InputStream is = getClass().getResourceAsStream("/" + item.getIcone());
             if (is != null) img.setImage(new Image(is));
@@ -133,7 +136,7 @@ public class GameplayController {
 
         // Label nome
         Label nome = new Label(item.getNome());
-        nome.setStyle("-fx-text-fill: white; -fx-font-size: 9px; -fx-wrap-text: true;");
+        nome.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-wrap-text: true;  -fx-font-family: 'm5x7';");
         nome.setMaxWidth(70);
         nome.setAlignment(Pos.CENTER);
 
@@ -143,8 +146,8 @@ public class GameplayController {
 
         // Card com fundo
         Rectangle bg = new Rectangle(76, 76);
-        bg.setFill(Color.web("#2d1b4e"));
-        bg.setStroke(Color.web("#9b59b6"));
+        bg.setFill(Color.web("#6682b5"));
+        bg.setStroke(Color.web("#4E6982"));
         bg.setStrokeWidth(1.5);
         bg.setArcWidth(10);
         bg.setArcHeight(10);
