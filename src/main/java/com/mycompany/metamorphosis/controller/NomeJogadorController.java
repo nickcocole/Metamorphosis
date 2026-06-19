@@ -6,11 +6,23 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
 
 public class NomeJogadorController {
 
     @FXML private TextField txtNome;
     @FXML private Label     lblErro;
+    
+    @FXML
+    public void initialize () {
+        
+        
+        Font.loadFont(
+        getClass().getResourceAsStream("/styles/m5x7.ttf"),
+        16
+        );
+        
+    }
 
     @FXML
     private void confirmar() throws IOException {

@@ -5,39 +5,24 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0"
-      style="-fx-background-color: #1a0a2e;"
-      xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.mycompany.metamorphosis.controller.NomeJogadorController">
+<VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #36558b;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.metamorphosis.controller.NomeJogadorController">
 
-    <padding><Insets top="40" bottom="40" left="60" right="60"/></padding>
+    <padding><Insets bottom="40" left="60" right="60" top="40" /></padding>
 
-    <Label text="✨ Bem-vindo a Metamorphosis ✨"
-           style="-fx-font-size: 22px; -fx-text-fill: #f0c040; -fx-font-weight: bold;"/>
+    <Label style="-fx-font-size: 45px; -fx-text-fill: #f0c040; -fx-font-weight: bold;  -fx-font-family: 'm5x7';" text="Bem-vindo a Metamorphosis"></Label>
 
-    <Label text="A cigana Layla convoca você para uma missão..."
-           style="-fx-font-size: 14px; -fx-text-fill: #ccaaff;"/>
+    <Label contentDisplay="CENTER" style=" -fx-font-family: 'm5x7'; -fx-font-size: 22px; -fx-text-fill: #ccaaff;" text="A cigana Layla precisa da sua ajuda!"></Label>
 
-    <Label text="Qual é o seu nome, transmorfo?"
-           style="-fx-font-size: 16px; -fx-text-fill: #ffffff;"/>
+    <Label style="-fx-font-size: 35px; -fx-text-fill: #ffffff;  -fx-font-family: 'm5x7';" text="Qual é o seu nome, transmorfo?">
+      <font>
+         <Font size="24.0" />
+      </font></Label>
 
-    <TextField fx:id="txtNome"
-               promptText="Digite seu nome"
-               maxWidth="300"
-               style="-fx-background-color: #2d1b4e; -fx-text-fill: white;
-                      -fx-border-color: #9b59b6; -fx-border-radius: 6;
-                      -fx-background-radius: 6; -fx-font-size: 14px;"/>
+    <TextField fx:id="txtNome" maxWidth="300" promptText="Digite seu nome" style="-fx-background-color: #243b60; -fx-text-fill: white;  -fx-font-family:'m5x7';  -fx-border-color: #1b2b46; -fx-border-radius: 6;                       -fx-background-radius: 6; -fx-font-size: 24px;" />
 
-    <Label fx:id="lblErro"
-           text=""
-           style="-fx-text-fill: #ff6b6b; -fx-font-size: 12px;"
-           visible="false"/>
+    <Label fx:id="lblErro" style="-fx-text-fill: #ff6b6b;  -fx-font-family:'m5x7'; -fx-font-size: 20px;" text="" visible="false" />
 
-    <Button text="Começar aventura →"
-            onAction="#confirmar"
-            style="-fx-background-color: #9b59b6; -fx-text-fill: white;
-                   -fx-font-size: 14px; -fx-cursor: hand;
-                   -fx-background-radius: 8; -fx-padding: 10 30 10 30;"/>
+    <Button onAction="#confirmar" style="-fx-background-color:  #243b60; -fx-text-fill: white; -fx-font-family:'m5x7';  -fx-font-size: 24px; -fx-cursor: hand;                    -fx-background-radius: 8; -fx-padding: 10 30 10 30;" text="Começar aventura" />
 </VBox>

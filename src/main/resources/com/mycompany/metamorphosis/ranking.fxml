@@ -8,14 +8,14 @@
 
 <VBox alignment="CENTER" spacing="16" style="-fx-background-color: #d8e4f8; -fx-padding: 40;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.metamorphosis.controller.RankingController">
 
-    <Label style="-fx-font-size: 24px; -fx-text-fill: #505050; -fx-font-weight: bold;" text="Ranking de Transmorfos" />
+    <Label style="-fx-font-size: 48px; -fx-text-fill: #505050; -fx-font-weight: bold; -fx-font-family: 'm5x7';" text="Ranking de Transmorfos" />
 
-    <TableView fx:id="tableRanking" prefHeight="420" prefWidth="480" style="-fx-background-color: #1a0a2e; -fx-table-cell-border-color: #36558b;">
+    <TableView fx:id="tableRanking" maxWidth="480.0" prefHeight="420" prefWidth="240" style="-fx-background-color: #243b60; -fx-table-cell-border-color: #111b2c;">
         <columns>
-            <TableColumn fx:id="colNome" prefWidth="240" text="Jogador" />
-            <TableColumn fx:id="colPontos" prefWidth="160" text="Pontos" />
+            <TableColumn fx:id="colNome" prefWidth="240" style="-fx-font-family: 'm5x7'; -fx-font-size: 24px;" text="Jogador" />
+            <TableColumn fx:id="colPontos" prefWidth="240" style="-fx-font-family: 'm5x7';  -fx-font-size: 24px;" text="Pontos" />
         </columns>
     </TableView>
 
-    <Button onAction="#voltarAoMenuPrincipal" style="-fx-background-color: #243b60; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand; -fx-background-radius: 8; -fx-padding: 8 24 8 24;" text="← Voltar ao Menu" />
+    <Button onAction="#voltarAoMenuPrincipal" style="-fx-font-family: 'm5x7'; -fx-background-color: #36558b; -fx-text-fill: white; -fx-font-size: 28px; -fx-cursor: hand; -fx-background-radius: 8; -fx-padding: 8 24 8 24;" text="Voltar ao Menu" />
 </VBox>

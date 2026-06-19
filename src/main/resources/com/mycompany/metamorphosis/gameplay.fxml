@@ -39,9 +39,7 @@
 
         <!-- Empurra botões para a direita -->
         <HBox HBox.hgrow="ALWAYS" />
-
-        <Button onAction="#abrirInventario" style="-fx-background-color: #243b60; -fx-text-fill: white;  -fx-font-size: 32px; -fx-cursor: hand; -fx-background-radius: 6; -fx-font-family: 'm5x7';" text="Inventário" />
-        <Button onAction="#voltar" style="-fx-background-color: #333; -fx-font-size: 32px; -fx-text-fill: #ccc;  -fx-font-family: 'm5x7';   -fx-cursor: hand; -fx-background-radius: 6;" text="← Menu" />
+        <Button onAction="#voltar" style="-fx-background-color: #333; -fx-font-size: 32px; -fx-text-fill: #ccc;  -fx-font-family: 'm5x7';   -fx-cursor: hand; -fx-background-radius: 6;" text="Menu" />
     </HBox>
 
     <!-- ── ÁREA CENTRAL (drop zone + barra lateral) ────── -->
@@ -76,7 +74,7 @@
 
         <!-- Painel de objetivos da fase -->
         <VBox alignment="TOP_LEFT" minWidth="220" spacing="4">
-            <Label style="-fx-text-fill: #505050; -fx-font-size: 24px; -fx-font-family: 'm5x7';" text="📍 Objetivos:"></Label>
+            <Label style="-fx-text-fill: #505050; -fx-font-size: 24px; -fx-font-family: 'm5x7';" text="• Objetivos:" />
             <VBox fx:id="painelObjetivos" prefHeight="0.0" prefWidth="220.0" spacing="2" style="-fx-background-color: #566c9b;" />
         </VBox>
     </HBox>

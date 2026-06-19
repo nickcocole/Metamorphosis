@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Font;
 
 public class RankingController implements Initializable {
 
@@ -27,6 +28,10 @@ public class RankingController implements Initializable {
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colPontos.setCellValueFactory(new PropertyValueFactory<>("pontos"));
         carregarRanking();
+        Font.loadFont(
+        getClass().getResourceAsStream("/styles/m5x7.ttf"),
+        16
+        );
     }
 
     private void carregarRanking() {
