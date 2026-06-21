@@ -25,10 +25,21 @@ public class GerenciadorDeJogo {
     private int faseAtual;          // 1, 2 ou 3
     private List<Receita> receitas;
 
+    // Snapshot do inventário no INÍCIO de cada fase (para reiniciar corretamente)
+    private List<Item> snapshotInicioFase;
+
+    // ── Upgrades da loja (Fase 3) ────────────────────────────────────────
+    private int tempoExtraCronometro = 0;     // segundos extras adicionados ao cronômetro
+    private int protecaoRouboExtra   = 0;     // segundos extras antes do boss poder roubar de novo
+    private boolean dicaComprada     = false; // se já comprou uma dica nesta fase
+
     // Objetivos de cada fase
     private static final List<String> OBJETIVOS_FASE1 = List.of("CALDEIRÃO");
-    private static final List<String> OBJETIVOS_FASE2 = List.of("AVE ASSADA", "PESCADO ASSADO");
+    private static final List<String> OBJETIVOS_FASE2 = List.of("AVE ASADA", "PESCADO ASADO");
     private static final List<String> OBJETIVOS_FASE3 = List.of("CAIXÃO", "FAMÍLIA", "BUQUÊ");
+
+    // Tempo padrão de cada fase, em segundos (3 minutos)
+    public static final int TEMPO_PADRAO_FASE = 180;
 
     // ── Construtor privado ─────────────────────────────────────────────────
     private GerenciadorDeJogo() {
@@ -37,6 +48,7 @@ public class GerenciadorDeJogo {
         receitas   = new ArrayList<>();
         carregarReceitas();
         adicionarElementosBase();
+        salvarSnapshotFaseAtual();
     }
 
     // ── Reinicia para uma nova partida ─────────────────────────────────────
@@ -44,7 +56,11 @@ public class GerenciadorDeJogo {
         jogador    = new Jogador(nomeJogador, 0);
         inventario = new Inventario();
         faseAtual  = 1;
+        tempoExtraCronometro = 0;
+        protecaoRouboExtra   = 0;
+        dicaComprada         = false;
         adicionarElementosBase();
+        salvarSnapshotFaseAtual();
     }
 
     // ── Elementos iniciais ─────────────────────────────────────────────────
@@ -53,6 +69,28 @@ public class GerenciadorDeJogo {
         inventario.adicionar(new Item("elementos/agua.png",  "ÁGUA"));
         inventario.adicionar(new Item("elementos/terra.png", "TERRA"));
         inventario.adicionar(new Item("elementos/ar.png",    "AR"));
+    }
+
+    // ── Snapshot de fase (para recomeçar do jeito certo) ───────────────────
+    /** Chame isso sempre que uma fase começar (primeira vez ou reinício). */
+    public void salvarSnapshotFaseAtual() {
+        snapshotInicioFase = new ArrayList<>();
+        for (Item item : inventario.getItens()) {
+            snapshotInicioFase.add(new Item(item.getIcone(), item.getNome()));
+        }
+    }
+
+    /**
+     * Restaura o inventário ao estado que tinha quando a fase atual começou.
+     * Usado quando o cronômetro esgota e a fase precisa recomeçar.
+     */
+    public void restaurarSnapshotFaseAtual() {
+        inventario = new Inventario();
+        for (Item item : snapshotInicioFase) {
+            inventario.adicionar(new Item(item.getIcone(), item.getNome()));
+        }
+        // zera upgrades de "uso único" da fase (dica), mas mantém tempo comprado
+        dicaComprada = false;
     }
 
     // ── Todas as receitas do jogo ──────────────────────────────────────────
@@ -77,8 +115,8 @@ public class GerenciadorDeJogo {
         receitas.add(new Receita("ANIMAL",   "AR",       "PÁSSARO"));
         receitas.add(new Receita("ANIMAL",   "BARRO",    "HUMANO"));
         receitas.add(new Receita("ANIMAL",   "ARCO-ÍRIS","UNICÓRNIO"));
-        receitas.add(new Receita("PÁSSARO",  "FOGUEIRA", "AVE ASSADA"));
-        receitas.add(new Receita("PEIXE",    "FOGUEIRA", "PESCADO ASSADO"));
+        receitas.add(new Receita("PÁSSARO",  "FOGUEIRA", "AVE ASADA"));
+        receitas.add(new Receita("PEIXE",    "FOGUEIRA", "PESCADO ASADO"));
 
         // Fase 3
         receitas.add(new Receita("HUMANO",         "ÁRVORE",         "CEPO DE MADEIRA"));
@@ -95,15 +133,30 @@ public class GerenciadorDeJogo {
 
     // ── Tentar combinar dois itens ─────────────────────────────────────────
     /**
+     * Verifica se a combinação de nomeA + nomeB resultaria em um elemento
+     * que o jogador JÁ possui no inventário (para evitar mostrar overlay duplicado).
+     */
+    public boolean jaConheceCombinacao(String nomeA, String nomeB) {
+        for (Receita r : receitas) {
+            if (r.combina(nomeA, nomeB)) {
+                return inventario.possui(r.getResultado());
+            }
+        }
+        return false;
+    }
+
+    /**
      * Retorna o nome do resultado se a combinação for válida, ou null.
      * Também adiciona o item ao inventário e soma pontos automaticamente.
+     * Se o elemento já existir no inventário, ainda retorna o nome (combinação válida)
+     * mas NÃO adiciona pontos nem re-adiciona o item.
      */
     public String tentarCombinar(String nomeA, String nomeB) {
         for (Receita r : receitas) {
             if (r.combina(nomeA, nomeB)) {
                 String resultado = r.getResultado();
 
-                // Só adiciona se ainda não tiver no inventário
+                // Só adiciona e pontua se ainda não tiver no inventário
                 if (!inventario.possui(resultado)) {
                     int pontos = resultado.equals("AYCABRON") ? 5000 : 500;
                     inventario.adicionar(new Item(iconeDoItem(resultado), resultado));
@@ -113,6 +166,20 @@ public class GerenciadorDeJogo {
             }
         }
         return null; // combinação inválida
+    }
+
+    /**
+     * Retorna a receita necessária para alcançar um objetivo, navegando
+     * a árvore de combinações até achar algo que o jogador já possui.
+     * Usado pela dica da loja.
+     */
+    public String getDicaParaObjetivo(String objetivo) {
+        for (Receita r : receitas) {
+            if (r.getResultado().equals(objetivo)) {
+                return r.getItem1() + " + " + r.getItem2() + " = " + objetivo;
+            }
+        }
+        return "Nenhuma dica disponível.";
     }
 
     // ── Verifica se os objetivos da fase atual foram cumpridos ─────────────
@@ -130,11 +197,29 @@ public class GerenciadorDeJogo {
         };
     }
 
+    /** Retorna o primeiro objetivo da fase que ainda não foi alcançado. */
+    public String getProximoObjetivoPendente() {
+        for (String obj : getObjetivosFaseAtual()) {
+            if (!inventario.possui(obj)) return obj;
+        }
+        return null;
+    }
+
     // ── Avança para a próxima fase ─────────────────────────────────────────
-    public void avancarFase() {
+    /** true se ainda há próxima fase, false se o jogo terminou (era a fase 3). */
+    public boolean avancarFase() {
         if (faseAtual < 3) {
             faseAtual++;
+            dicaComprada = false;
+            salvarSnapshotFaseAtual();
+            return true;
         }
+        return false; // já era a última fase — quem chama deve ir para fimDeJogo
+    }
+
+    /** Reinicia a fase atual, restaurando o inventário ao que era no início dela. */
+    public void reiniciarFaseAtual() {
+        restaurarSnapshotFaseAtual();
     }
 
     // ── Remove um item do inventário (usado pelo Boss) ────────────────────
@@ -150,6 +235,46 @@ public class GerenciadorDeJogo {
         Item alvo = roubaveis.get((int)(Math.random() * roubaveis.size()));
         inventario.remover(alvo.getNome());
         return alvo;
+    }
+
+    // ── Upgrades da loja ─────────────────────────────────────────────────
+    public boolean comprarTempoExtraCronometro(int custoPontos, int segundosGanhos) {
+        if (jogador.getPontos() < custoPontos) return false;
+        jogador.setPontos(jogador.getPontos() - custoPontos);
+        tempoExtraCronometro += segundosGanhos;
+        return true;
+    }
+
+    public boolean comprarProtecaoRoubo(int custoPontos, int segundosGanhos) {
+        if (jogador.getPontos() < custoPontos) return false;
+        jogador.setPontos(jogador.getPontos() - custoPontos);
+        protecaoRouboExtra += segundosGanhos;
+        return true;
+    }
+
+    public boolean comprarDica(int custoPontos) {
+        if (jogador.getPontos() < custoPontos) return false;
+        jogador.setPontos(jogador.getPontos() - custoPontos);
+        dicaComprada = true;
+        return true;
+    }
+
+    public int getTempoExtraCronometro() { return tempoExtraCronometro; }
+    public int getProtecaoRouboExtra()   { return protecaoRouboExtra; }
+    public boolean isDicaComprada()      { return dicaComprada; }
+
+    /** Consome o tempo extra acumulado (chamado quando o cronômetro é montado). */
+    public int consumirTempoExtra() {
+        int t = tempoExtraCronometro;
+        tempoExtraCronometro = 0;
+        return t;
+    }
+
+    /** Consome a proteção de roubo extra acumulada. */
+    public int consumirProtecaoRoubo() {
+        int p = protecaoRouboExtra;
+        protecaoRouboExtra = 0;
+        return p;
     }
 
     // ── Mapa de ícones dos itens ───────────────────────────────────────────
@@ -176,8 +301,8 @@ public class GerenciadorDeJogo {
             case "PÁSSARO"         -> "elementos/passaro.png";
             case "HUMANO"          -> "elementos/humano.png";
             case "UNICÓRNIO"       -> "elementos/unicornio.png";
-            case "AVE ASSADA"      -> "elementos/aveasada.png";
-            case "PESCADO ASSADO"  -> "elementos/pescado asado.png";
+            case "AVE ASADA"      -> "elementos/aveasada.png";
+            case "PESCADO ASADO"  -> "elementos/pescadoasado.png";
             case "CEPO DE MADEIRA" -> "elementos/cepodemadeira.png";
             case "FOGUEIRA"        -> "elementos/fogueira.png";
             case "AYCABRON"        -> "elementos/aycabron.png";

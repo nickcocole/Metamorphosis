@@ -25,7 +25,7 @@
     └────────────────────────────────────────────────────────┘
 -->
 
-<VBox prefHeight="720" prefWidth="1280" style="-fx-background-color: #0d0d1a;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.metamorphosis.controller.GameplayController">
+<VBox prefHeight="720" prefWidth="1280" style="-fx-background-color: #0d0d1a;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.metamorphosis.controller.GameplayController">
 
     <!-- ── HUD ─────────────────────────────────────────── -->
     <HBox fx:id="hud" alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #36558b; -fx-padding: 8 16 8 16;">
@@ -36,10 +36,18 @@
         <Label style="-fx-text-fill: #222222;" text="|" />
         <Label style="-fx-text-fill: #aaa; -fx-font-size: 32px; -fx-font-family: 'm5x7';" text="Pontos:" />
         <Label fx:id="lblPontos" style="-fx-text-fill: #50fa7b; -fx-font-size: 32px; -fx-font-family: 'm5x7';" text="0" />
+        <Label style="-fx-text-fill: #222222;" text="|" />
+        <!-- Cronômetro -->
+        <Label style="-fx-text-fill: #aaa; -fx-font-size: 32px; -fx-font-family: 'm5x7';" text="⏱" />
+        <Label fx:id="lblCronometro" style="-fx-text-fill: #50d0ff; -fx-font-size: 32px; -fx-font-family: 'm5x7'; -fx-font-weight: bold;" text="03:00" />
 
         <!-- Empurra botões para a direita -->
         <HBox HBox.hgrow="ALWAYS" />
-        <Button onAction="#voltar" style="-fx-background-color: #333; -fx-font-size: 32px; -fx-text-fill: #ccc;  -fx-font-family: 'm5x7';   -fx-cursor: hand; -fx-background-radius: 6;" text="Menu" />
+        <!-- Botão Loja (visível apenas na fase 3) -->
+        <Button fx:id="btnLoja" managed="false" onAction="#abrirLoja" style="-fx-background-color: #7b2d8b; -fx-font-size: 28px; -fx-text-fill: #fff; -fx-font-family: 'm5x7'; -fx-cursor: hand; -fx-background-radius: 6;" text="🛒 Loja" visible="false" />
+
+        
+        <Button onAction="#voltar" style="-fx-background-color: #333; -fx-font-size: 32px; -fx-text-fill: #ccc; -fx-font-family: 'm5x7'; -fx-cursor: hand; -fx-background-radius: 6;" text="Menu" />
     </HBox>
 
     <!-- ── ÁREA CENTRAL (drop zone + barra lateral) ────── -->
@@ -88,4 +96,14 @@
             <Label fx:id="lblComboPontos" style="-fx-font-size: 16px; -fx-text-fill: #50fa7b;" text="+500" />
         </VBox>
     </StackPane>
+    
+    <!-- ── OVERLAY TEMPO ESGOTADO ── -->
+    <StackPane fx:id="overlayTempoEsgotado" managed="false" prefHeight="720" prefWidth="1280" style="-fx-background-color: rgba(0,0,0,0.85);" visible="false">
+        <VBox alignment="CENTER" spacing="20">
+            <Label style="-fx-font-size: 48px; -fx-text-fill: #ff6b6b; -fx-font-weight: bold; -fx-font-family: 'm5x7';" text="⏰ Tempo Esgotado!" />
+            <Label style="-fx-font-size: 20px; -fx-text-fill: #dddddd; -fx-font-family: 'm5x7';" text="Você perdeu os elementos desta fase, mas mantém os anteriores." />
+            <Button onAction="#recomecarFase" style="-fx-background-color: #9b59b6; -fx-font-size: 28px; -fx-text-fill: white; -fx-font-family: 'm5x7'; -fx-cursor: hand; -fx-background-radius: 8; -fx-padding: 10 30 10 30;" text="🔄 Recomeçar Fase" />
+        </VBox>
+    </StackPane>
+    
 </VBox>

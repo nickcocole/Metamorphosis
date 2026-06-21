@@ -12,8 +12,12 @@ import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,58 +27,65 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameplayController {
 
     // ── FXML ──────────────────────────────────────────────────────────────
-    @FXML private Label     lblFase;
-    @FXML private Label     lblJogador;
-    @FXML private Label     lblPontos;
+    @FXML private Label      lblFase;
+    @FXML private Label      lblJogador;
+    @FXML private Label      lblPontos;
+    @FXML private Label      lblCronometro;
+    @FXML private Button     btnLoja;
     @FXML private AnchorPane areaJogo;
-    @FXML private FlowPane  painelElementos;
-    @FXML private ImageView imgPersonagem;
-    @FXML private Label     lblNomePersonagem;
-    @FXML private Label     lblDialogo;
-    @FXML private VBox      painelObjetivos;
-    @FXML private StackPane overlayCombo;
-    @FXML private ImageView imgComboIcone;
-    @FXML private Label     lblComboTitulo;
-    @FXML private Label     lblComboNome;
-    @FXML private Label     lblComboPontos;
+    @FXML private FlowPane   painelElementos;
+    @FXML private ImageView  imgPersonagem;
+    @FXML private Label      lblNomePersonagem;
+    @FXML private Label      lblDialogo;
+    @FXML private VBox       painelObjetivos;
+    @FXML private StackPane  overlayCombo;
+    @FXML private ImageView  imgComboIcone;
+    @FXML private Label      lblComboTitulo;
+    @FXML private Label      lblComboNome;
+    @FXML private Label      lblComboPontos;
+    @FXML private StackPane  overlayTempoEsgotado;
+    
     private double mouseXInicial;
     private double mouseYInicial;
     private double cardXInicial;
     private double cardYInicial;
 
-    // ── Estado interno do drag ─────────────────────────────────────────────
+    // ── Drag ──────────────────────────────────────────────────────────────
     private StackPane elementoArrastado = null;
     private double    dragOffsetX, dragOffsetY;
 
-    // ── Diálogos das fases ─────────────────────────────────────────────────
+    // ── Flags de controle ────────────────────────────────────────────────
+    private boolean faseJaConcluida = false;
+    private boolean tempoEsgotado   = false;
+
+    // ── Cronômetro ───────────────────────────────────────────────────────
+    private Timeline timerCronometro;
+    private int segundosRestantes;
+
+    // ── Diálogos ─────────────────────────────────────────────────────────
     private static final String DIALOGO_FASE1 =
-        "Olá, transmorfo! Sou Layla, a cigana das estrelas. " +
+        "Olá, alquimista! Sou Layla, a cigana das estrelas. " +
         "Preciso urgentemente de um CALDEIRÃO para preparar minha poção. " +
         "Combine os elementos e traga-me o que peço... o destino depende disso! 🔮";
 
     private static final String DIALOGO_FASE2 =
-        "¡GRRR! ¡Soy Nilipe y estoy HAMBRIENTO! " +
-        "Tráeme una AVE ASADA y un PESCADO ASADO ahora mismo..." +
-        "¡o devoraré tus elementos! 👾";
+        "GRRR! Eu sou Nilipe, e estou FAMINTO! " +
+        "Me traga uma AVE ASSADA e um PESCADO ASSADO agora mesmo... " +
+        "ou vou devorar seus elementos! 👾";
 
     private static final String DIALOGO_FASE3_LAYLA =
         "Meu pai se foi... Preciso preparar seu velório com dignidade. " +
         "Faça o CAIXÃO, reúna a FAMÍLIA e monte o BUQUÊ de despedida. 🕯️";
 
-    private static final String DIALOGO_FASE3_NILIPE =
-        "¡Sigo aquí! ¡Y con MÁS HAMBRE que antes! " +
-        "Voy a robar tus ítems hasta que termines... ¡si es que puedes! 😈";
-
-    // ── Timer do Boss ──────────────────────────────────────────────────────
+    // ── Timers ───────────────────────────────────────────────────────────
     private Timeline timerBoss;
-
-    // ── Typewriter ─────────────────────────────────────────────────────────
     private Timeline timerTexto;
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -83,37 +94,35 @@ public class GameplayController {
         atualizarHUD();
         carregarElementosNaBarraLateral();
         iniciarFase();
-        Font.loadFont(
-        getClass().getResourceAsStream("/styles/m5x7.ttf"),
-        16
-        );
     }
-    
-    
 
-    // ── HUD ────────────────────────────────────────────────────────────────
+    // ── HUD ──────────────────────────────────────────────────────────────
     private void atualizarHUD() {
         GerenciadorDeJogo g = GerenciadorDeJogo.getInstance();
         lblFase.setText("Fase " + g.getFaseAtual());
         lblJogador.setText(g.getJogador().getNome());
         lblPontos.setText(String.valueOf(g.getJogador().getPontos()));
         atualizarObjetivos();
+
+        // A loja é visível APENAS na fase 3
+        boolean fase3 = g.getFaseAtual() == 3;
+        btnLoja.setVisible(fase3);
+        btnLoja.setManaged(fase3);
     }
 
     private void atualizarObjetivos() {
         painelObjetivos.getChildren().clear();
         GerenciadorDeJogo g = GerenciadorDeJogo.getInstance();
         for (String obj : g.getObjetivosFaseAtual()) {
-            
             boolean feito = g.getInventario().possui(obj);
             Label lbl = new Label((feito ? "✅ " : "⬜ ") + obj);
             lbl.setStyle("-fx-text-fill: " + (feito ? "#50fa7b" : "#dddddd") +
-                         "; -fx-font-size: 24px; -fx-font-family: 'm5x7';");
+                         "; -fx-font-size: 12px;");
             painelObjetivos.getChildren().add(lbl);
         }
     }
 
-    // ── Barra lateral com os elementos disponíveis ─────────────────────────
+    // ── Barra lateral ────────────────────────────────────────────────────
     private void carregarElementosNaBarraLateral() {
         painelElementos.getChildren().clear();
         for (Item item : GerenciadorDeJogo.getInstance().getInventario().getItens()) {
@@ -121,7 +130,6 @@ public class GameplayController {
         }
     }
 
-    /** Cria um card visual do elemento (na barra OU na área de jogo). */
     private StackPane criarCartaoElemento(Item item, boolean naBarraLateral) {
         // Ícone
         ImageView img = new ImageView();
@@ -158,7 +166,7 @@ public class GameplayController {
 
         if (naBarraLateral) {
             // Clique na barra → lança o elemento na área de jogo
-            card.setOnMouseClicked(e -> lançarElementoNaArea(item));
+            card.setOnMouseClicked(e -> lancarElementoNaArea(item));
         } else {
             // Está na área → pode ser arrastado
             habilitarDrag(card);
@@ -167,21 +175,19 @@ public class GameplayController {
         return card;
     }
 
-    /** Lança uma cópia do elemento na área de drop no centro. */
-    private void lançarElementoNaArea(Item item) {
+    private void lancarElementoNaArea(Item item) {
         StackPane card = criarCartaoElemento(item, false);
-
-        // Posição aleatória na área
-        double x = 100 + Math.random() * (areaJogo.getWidth()  - 180);
-        double y = 60  + Math.random() * (areaJogo.getHeight() - 160);
-
+        double largura = areaJogo.getWidth()  > 0 ? areaJogo.getWidth()  : 900;
+        double altura  = areaJogo.getHeight() > 0 ? areaJogo.getHeight() : 500;
+        double x = 100 + Math.random() * Math.max(largura  - 180, 50);
+        double y = 60  + Math.random() * Math.max(altura   - 160, 50);
         AnchorPane.setLeftAnchor(card, x);
         AnchorPane.setTopAnchor(card, y);
         areaJogo.getChildren().add(card);
     }
 
-    // ── Drag-and-drop na área de jogo ──────────────────────────────────────
-    private void habilitarDrag(StackPane card) {
+    // ── Drag-and-drop ────────────────────────────────────────────────────
+     private void habilitarDrag(StackPane card) {
 
         card.setOnMousePressed(e -> {
             elementoArrastado = card;
@@ -219,62 +225,66 @@ public class GameplayController {
         });
     }
 
+
     private StackPane encontrarColisao(StackPane origem) {
         double ox = AnchorPane.getLeftAnchor(origem);
         double oy = AnchorPane.getTopAnchor(origem);
-
         for (var node : areaJogo.getChildren()) {
-            if (!(node instanceof StackPane alvo)) continue;
+            if (!(node instanceof StackPane)) continue;
+            StackPane alvo = (StackPane) node;
             if (alvo == origem) continue;
-
             double ax = AnchorPane.getLeftAnchor(alvo);
             double ay = AnchorPane.getTopAnchor(alvo);
-
-            // Colisão simples por distância
-            if (Math.abs(ox - ax) < 70 && Math.abs(oy - ay) < 70) {
-                return alvo;
-            }
+            if (Math.abs(ox - ax) < 70 && Math.abs(oy - ay) < 70) return alvo;
         }
         return null;
     }
 
-    // ── Lógica de combinação ───────────────────────────────────────────────
+    // ── Combinação ───────────────────────────────────────────────────────
     private void processarCombinacao(String nomeA, String nomeB,
                                      StackPane cardA, StackPane cardB) {
-        String resultado = GerenciadorDeJogo.getInstance().tentarCombinar(nomeA, nomeB);
+        if (tempoEsgotado) return;
+
+        GerenciadorDeJogo g = GerenciadorDeJogo.getInstance();
+
+        // Verifica se o elemento resultante já está no inventário ANTES de combinar
+        boolean jaExistia = g.jaConheceCombinacao(nomeA, nomeB);
+
+        String resultado = g.tentarCombinar(nomeA, nomeB);
 
         if (resultado != null) {
-            // Remove os dois cards usados
             areaJogo.getChildren().removeAll(cardA, cardB);
-
-            // Recarrega a barra lateral com o novo item
             carregarElementosNaBarraLateral();
             atualizarHUD();
 
-            // Mostra overlay de descoberta
-            mostrarOverlayCombo(resultado);
-
-            // Verifica se é easter egg
-            if (resultado.equals("AYCABRON")) {
-                mostrarEasterEgg();
+            // Só mostra overlay e conta pontos se o elemento é novo
+            if (!jaExistia) {
+                mostrarOverlayCombo(resultado);
+                if (resultado.equals("AYCABRON")) mostrarEasterEgg();
             }
 
-            // Verifica conclusão de fase
-            if (GerenciadorDeJogo.getInstance().faseCompleta()) {
-                PauseTransition pausa = new PauseTransition(Duration.seconds(1.5));
-                pausa.setOnFinished(e -> avancarFase());
+            if (!faseJaConcluida && g.faseCompleta()) {
+                faseJaConcluida = true;
+                pararCronometro();
+                int faseAtual = g.getFaseAtual();
+
+                PauseTransition pausa = new PauseTransition(Duration.seconds(2.0));
+                pausa.setOnFinished(e -> {
+                    if (faseAtual >= 3) {
+                        finalizarJogo();
+                    } else {
+                        avancarFase();
+                    }
+                });
                 pausa.play();
             }
         } else {
-            // Combinação inválida: devolve card A para posição anterior
             piscarVermelho(cardA);
         }
     }
 
     private void mostrarOverlayCombo(String nomeResultado) {
-        GerenciadorDeJogo g = GerenciadorDeJogo.getInstance();
         boolean easter = nomeResultado.equals("AYCABRON");
-
         lblComboTitulo.setText(easter ? "🌟 EASTER EGG DESCOBERTO! 🌟" : "✨ Novo elemento!");
         lblComboNome.setText(nomeResultado);
         lblComboPontos.setText("+" + (easter ? "5000" : "500") + " pontos!");
@@ -288,8 +298,7 @@ public class GameplayController {
         overlayCombo.setVisible(true);
         overlayCombo.setManaged(true);
 
-        PauseTransition pausa = new PauseTransition(
-            Duration.seconds(easter ? 4.0 : 2.0));
+        PauseTransition pausa = new PauseTransition(Duration.seconds(easter ? 4.0 : 2.0));
         pausa.setOnFinished(e -> {
             overlayCombo.setVisible(false);
             overlayCombo.setManaged(false);
@@ -312,14 +321,20 @@ public class GameplayController {
         p.play();
     }
 
-    // ── Fases ─────────────────────────────────────────────────────────────
+    // ── Fases ────────────────────────────────────────────────────────────
     private void iniciarFase() {
+        faseJaConcluida = false;
+        tempoEsgotado    = false;
+        overlayTempoEsgotado.setVisible(false);
+        overlayTempoEsgotado.setManaged(false);
+
         int fase = GerenciadorDeJogo.getInstance().getFaseAtual();
         switch (fase) {
-            case 1 -> iniciarFase1();
-            case 2 -> iniciarFase2();
-            case 3 -> iniciarFase3();
+            case 1: iniciarFase1(); break;
+            case 2: iniciarFase2(); break;
+            case 3: iniciarFase3(); break;
         }
+        iniciarCronometro();
     }
 
     private void iniciarFase1() {
@@ -339,49 +354,120 @@ public class GameplayController {
     }
 
     private void avancarFase() {
-        GerenciadorDeJogo.getInstance().avancarFase();
-        int novaFase = GerenciadorDeJogo.getInstance().getFaseAtual();
+        pararBoss();
+        pararCronometro();
+        boolean avancou = GerenciadorDeJogo.getInstance().avancarFase();
+        if (!avancou) {
+            // Era a última fase — vai para fim de jogo
+            finalizarJogo();
+            return;
+        }
+        areaJogo.getChildren().clear();
+        atualizarHUD();
+        carregarElementosNaBarraLateral();
+        iniciarFase();
+    }
 
-        if (novaFase > 3) {
-            // Jogo concluído → salva e vai para ranking
-            salvarEIrParaFimDeJogo();
-        } else {
-            areaJogo.getChildren().clear();
-            atualizarHUD();
-            carregarElementosNaBarraLateral();
-            iniciarFase();
+    // ── Fim de jogo ──────────────────────────────────────────────────────
+    private void finalizarJogo() {
+        pararBoss();
+        pararCronometro();
+        com.mycompany.metamorphosis.DAO.RankingDAO dao =
+            new com.mycompany.metamorphosis.DAO.RankingDAO();
+        dao.salvarPontuacao(GerenciadorDeJogo.getInstance().getJogador());
+        try {
+            App.setRoot("fimDeJogo");
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
-    // ── Boss (Fase 3) ──────────────────────────────────────────────────────
-    private void iniciarBoss() {
-        // Nilipe rouba um item a cada 18–28 segundos
-        timerBoss = new Timeline(new KeyFrame(
-            Duration.seconds(18 + Math.random() * 10),
-            e -> {
-                Item roubado = GerenciadorDeJogo.getInstance().removerItemAleatorio();
-                if (roubado != null) {
-                    Platform.runLater(() -> {
-                        carregarElementosNaBarraLateral();
-                        atualizarHUD();
-                        mostrarAlertaBoss(roubado.getNome());
-                        digitarDialogo(DIALOGO_FASE3_NILIPE);
-                    });
-                }
-                // Reagenda com novo intervalo aleatório
-                timerBoss.getKeyFrames().setAll(new KeyFrame(
-                    Duration.seconds(18 + Math.random() * 10), ev -> {
-                        Item r = GerenciadorDeJogo.getInstance().removerItemAleatorio();
-                        if (r != null) Platform.runLater(() -> {
-                            carregarElementosNaBarraLateral();
-                            atualizarHUD();
-                            mostrarAlertaBoss(r.getNome());
-                        });
-                    }
-                ));
+    // ── Cronômetro ───────────────────────────────────────────────────────
+    private void iniciarCronometro() {
+        pararCronometro();
+
+        int tempoExtra = GerenciadorDeJogo.getInstance().consumirTempoExtra();
+        segundosRestantes = GerenciadorDeJogo.TEMPO_PADRAO_FASE + tempoExtra;
+        lblCronometro.setStyle("-fx-text-fill: #50d0ff; -fx-font-size: 32px; -fx-font-family: 'm5x7'; -fx-font-weight: bold;");
+        atualizarLabelCronometro();
+
+        timerCronometro = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            segundosRestantes--;
+            atualizarLabelCronometro();
+
+            if (segundosRestantes <= 10 && segundosRestantes > 0) {
+                lblCronometro.setStyle("-fx-text-fill: #ff6b6b; -fx-font-size: 32px; -fx-font-family: 'm5x7'; -fx-font-weight: bold;");
             }
-        ));
-        timerBoss.setCycleCount(Timeline.INDEFINITE);
+
+            if (segundosRestantes <= 0) {
+                tempoEsgotarSeChegouAZero();
+            }
+        }));
+        timerCronometro.setCycleCount(Timeline.INDEFINITE);
+        timerCronometro.play();
+    }
+
+    private void atualizarLabelCronometro() {
+        int min = Math.max(segundosRestantes, 0) / 60;
+        int seg = Math.max(segundosRestantes, 0) % 60;
+        lblCronometro.setText(String.format("%02d:%02d", min, seg));
+    }
+
+    private void tempoEsgotarSeChegouAZero() {
+        if (faseJaConcluida || tempoEsgotado) return;
+        tempoEsgotado = true;
+        pararCronometro();
+        pararBoss();
+        Platform.runLater(() -> {
+            overlayTempoEsgotado.setVisible(true);
+            overlayTempoEsgotado.setManaged(true);
+            overlayTempoEsgotado.toFront();
+        });
+    }
+
+    private void pararCronometro() {
+        if (timerCronometro != null) timerCronometro.stop();
+    }
+
+    @FXML
+    private void recomecarFase() {
+        overlayTempoEsgotado.setVisible(false);
+        overlayTempoEsgotado.setManaged(false);
+
+        // Restaura inventário ao estado do início da fase (sem os elementos desbloqueados nela)
+        GerenciadorDeJogo.getInstance().reiniciarFaseAtual();
+
+        areaJogo.getChildren().clear();
+        atualizarHUD();
+        carregarElementosNaBarraLateral();
+        iniciarFase();
+    }
+
+    // ── Boss (Fase 3) ────────────────────────────────────────────────────
+    private void iniciarBoss() {
+        agendarProximoRoubo();
+    }
+
+    private void agendarProximoRoubo() {
+        if (timerBoss != null) timerBoss.stop();
+
+        int protecaoExtra = GerenciadorDeJogo.getInstance().consumirProtecaoRoubo();
+        double intervalo = 18 + Math.random() * 10 + protecaoExtra;
+
+        timerBoss = new Timeline(new KeyFrame(Duration.seconds(intervalo), e -> {
+            if (tempoEsgotado || faseJaConcluida) return;
+
+            Item roubado = GerenciadorDeJogo.getInstance().removerItemAleatorio();
+            if (roubado != null) {
+                Platform.runLater(() -> {
+                    carregarElementosNaBarraLateral();
+                    atualizarHUD();
+                    mostrarAlertaBoss(roubado.getNome());
+                });
+            }
+            agendarProximoRoubo();
+        }));
+        timerBoss.setCycleCount(1);
         timerBoss.play();
     }
 
@@ -394,7 +480,7 @@ public class GameplayController {
         if (timerBoss != null) timerBoss.stop();
     }
 
-    // ── Diálogo estilo visual novel (typewriter) ───────────────────────────
+    // ── Diálogo typewriter ───────────────────────────────────────────────
     private void carregarPersonagem(String caminhoImg, String nome) {
         lblNomePersonagem.setText(nome);
         try {
@@ -419,27 +505,31 @@ public class GameplayController {
         timerTexto.play();
     }
 
-    // ── Salvar e ranking ──────────────────────────────────────────────────
-    private void salvarEIrParaFimDeJogo() {
-        pararBoss();
-        GerenciadorDeJogo g = GerenciadorDeJogo.getInstance();
-        com.mycompany.metamorphosis.DAO.RankingDAO dao =
-            new com.mycompany.metamorphosis.DAO.RankingDAO();
-        dao.salvarPontuacao(g.getJogador());
-        try { App.setRoot("fimDeJogo"); }
-        catch (IOException ex) { ex.printStackTrace(); }
-    }
-
-    // ── Botões FXML ────────────────────────────────────────────────────────
+    // ── Botões FXML ──────────────────────────────────────────────────────
     @FXML
     private void voltar() throws IOException {
         pararBoss();
+        pararCronometro();
         App.setRoot("menuPrincipal");
     }
 
+
     @FXML
-    private void abrirInventario() {
-        System.out.println("Inventário aberto!");
+    private void abrirLoja() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/com/mycompany/metamorphosis/loja.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Loja");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            // Atualiza HUD após fechar loja (pontos podem ter mudado)
+            atualizarHUD();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    
 }

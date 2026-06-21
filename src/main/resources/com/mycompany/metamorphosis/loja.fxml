@@ -1,14 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.metamorphosis.controller.LojaController">
-    <stylesheets>
-        <URL value="@/styles/loja.css"/>
-    </stylesheets>
-</AnchorPane>
+<!--
+    Loja da Fase 3 — o jogador troca pontos por ajudas contra o boss Nilipe.
+    Aberta como modal a partir do GameplayController.
+-->
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.mycompany.metamorphosis.controller.LojaController"
+      style="-fx-background-color: #1a0a2e;"
+      spacing="16"
+      prefWidth="560" prefHeight="520">
+
+    <padding><Insets top="24" bottom="24" left="28" right="28"/></padding>
+
+    <Label text="🛒 Loja da Layla"
+           style="-fx-font-size: 22px; -fx-text-fill: #f0c040; -fx-font-weight: bold;"/>
+
+    <Label text="Troque seus pontos por ajudas contra o monstro Nilipe"
+           style="-fx-font-size: 12px; -fx-text-fill: #ccaaff;"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT"
+          style="-fx-background-color: #2d1b4e; -fx-background-radius: 8; -fx-padding: 10 16 10 16;">
+        <Label text="Seus pontos:" style="-fx-text-fill: #aaaaaa; -fx-font-size: 13px;"/>
+        <Label fx:id="lblPontosAtuais" text="0"
+               style="-fx-text-fill: #50fa7b; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+    </HBox>
+
+    <!-- ── Upgrade 1: Tempo extra no cronômetro ──────────────────────── -->
+    <VBox spacing="6"
+          style="-fx-background-color: #2d1b4e; -fx-background-radius: 10;
+                 -fx-border-color: #9b59b6; -fx-border-radius: 10; -fx-padding: 14;">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="⏱️" style="-fx-font-size: 20px;"/>
+            <VBox spacing="2">
+                <Label text="Tempo Extra"
+                       style="-fx-text-fill: #ffffff; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <Label text="Adiciona 60 segundos ao cronômetro da fase"
+                       style="-fx-text-fill: #aaaaaa; -fx-font-size: 11px;"/>
+            </VBox>
+            <HBox HBox.hgrow="ALWAYS"/>
+            <Label text="800 pts" style="-fx-text-fill: #f0c040; -fx-font-size: 13px;"/>
+        </HBox>
+        <Button fx:id="btnComprarTempo" text="Comprar" onAction="#comprarTempoExtra"
+                maxWidth="Infinity"
+                style="-fx-background-color: #9b59b6; -fx-text-fill: white;
+                       -fx-cursor: hand; -fx-background-radius: 6; -fx-font-size: 12px;"/>
+    </VBox>
+
+    <!-- ── Upgrade 2: Proteção contra roubo ───────────────────────────── -->
+    <VBox spacing="6"
+          style="-fx-background-color: #2d1b4e; -fx-background-radius: 10;
+                 -fx-border-color: #9b59b6; -fx-border-radius: 10; -fx-padding: 14;">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="🛡️" style="-fx-font-size: 20px;"/>
+            <VBox spacing="2">
+                <Label text="Proteção Anti-Nilipe"
+                       style="-fx-text-fill: #ffffff; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <Label text="Nilipe espera 30s extras antes do próximo roubo"
+                       style="-fx-text-fill: #aaaaaa; -fx-font-size: 11px;"/>
+            </VBox>
+            <HBox HBox.hgrow="ALWAYS"/>
+            <Label text="600 pts" style="-fx-text-fill: #f0c040; -fx-font-size: 13px;"/>
+        </HBox>
+        <Button fx:id="btnComprarProtecao" text="Comprar" onAction="#comprarProtecao"
+                maxWidth="Infinity"
+                style="-fx-background-color: #9b59b6; -fx-text-fill: white;
+                       -fx-cursor: hand; -fx-background-radius: 6; -fx-font-size: 12px;"/>
+    </VBox>
+
+    <!-- ── Upgrade 3: Dica de combinação ──────────────────────────────── -->
+    <VBox spacing="6"
+          style="-fx-background-color: #2d1b4e; -fx-background-radius: 10;
+                 -fx-border-color: #9b59b6; -fx-border-radius: 10; -fx-padding: 14;">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="💡" style="-fx-font-size: 20px;"/>
+            <VBox spacing="2">
+                <Label text="Dica da Layla"
+                       style="-fx-text-fill: #ffffff; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <Label text="Revela a próxima combinação que falta"
+                       style="-fx-text-fill: #aaaaaa; -fx-font-size: 11px;"/>
+            </VBox>
+            <HBox HBox.hgrow="ALWAYS"/>
+            <Label text="400 pts" style="-fx-text-fill: #f0c040; -fx-font-size: 13px;"/>
+        </HBox>
+        <Button fx:id="btnComprarDica" text="Comprar" onAction="#comprarDica"
+                maxWidth="Infinity"
+                style="-fx-background-color: #9b59b6; -fx-text-fill: white;
+                       -fx-cursor: hand; -fx-background-radius: 6; -fx-font-size: 12px;"/>
+    </VBox>
+
+    <!-- Mensagem de feedback (sucesso/erro) -->
+    <Label fx:id="lblMensagem" text="" wrapText="true"
+           style="-fx-text-fill: #50fa7b; -fx-font-size: 12px;"/>
+
+    <HBox HBox.hgrow="ALWAYS"/>
+
+    <Button text="Fechar" onAction="#fechar" maxWidth="Infinity"
+            style="-fx-background-color: #333; -fx-text-fill: #ccc;
+                   -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 8;"/>
+</VBox>

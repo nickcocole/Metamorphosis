@@ -1,4 +1,3 @@
-
 package com.mycompany.metamorphosis.model;
 
 /**
@@ -25,5 +24,13 @@ public class Receita {
     public String getResultado() {
         return resultado;
     }
-    
+
+    public String getItem1() {
+        return item1;
+    }
+
+    public String getItem2() {
+        return item2;
+    }
+
 }
