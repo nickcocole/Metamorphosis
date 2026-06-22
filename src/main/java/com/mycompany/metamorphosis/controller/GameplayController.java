@@ -6,6 +6,8 @@ import com.mycompany.metamorphosis.model.Item;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
@@ -125,7 +127,10 @@ public class GameplayController {
     // ── Barra lateral ────────────────────────────────────────────────────
     private void carregarElementosNaBarraLateral() {
         painelElementos.getChildren().clear();
-        for (Item item : GerenciadorDeJogo.getInstance().getInventario().getItens()) {
+        List<Item> itensOrdenados = new ArrayList<>(
+            GerenciadorDeJogo.getInstance().getInventario().getItens());
+        itensOrdenados.sort((a, b) -> a.getNome().compareToIgnoreCase(b.getNome()));
+        for (Item item : itensOrdenados) {
             painelElementos.getChildren().add(criarCartaoElemento(item, true));
         }
     }
@@ -260,7 +265,6 @@ public class GameplayController {
             // Só mostra overlay e conta pontos se o elemento é novo
             if (!jaExistia) {
                 mostrarOverlayCombo(resultado);
-                if (resultado.equals("AYCABRON")) mostrarEasterEgg();
             }
 
             if (!faseJaConcluida && g.faseCompleta()) {
@@ -285,6 +289,13 @@ public class GameplayController {
 
     private void mostrarOverlayCombo(String nomeResultado) {
         boolean easter = nomeResultado.equals("AYCABRON");
+
+        // Sempre restaura o estilo padrão antes de decidir o estilo desta
+        // combinação. Sem isso, depois do primeiro Aycabron o overlay e o
+        // título ficavam roxos para sempre, mesmo em combinações normais.
+        overlayCombo.setStyle("-fx-background-color: rgba(0,0,0,0.75);");
+        lblComboTitulo.setStyle("-fx-font-size: 26px; -fx-text-fill: #f0c040; -fx-font-weight: bold;");
+
         lblComboTitulo.setText(easter ? "🌟 EASTER EGG DESCOBERTO! 🌟" : "✨ Novo elemento!");
         lblComboNome.setText(nomeResultado);
         lblComboPontos.setText("+" + (easter ? "5000" : "500") + " pontos!");
@@ -297,6 +308,8 @@ public class GameplayController {
 
         overlayCombo.setVisible(true);
         overlayCombo.setManaged(true);
+
+        if (easter) mostrarEasterEgg();
 
         PauseTransition pausa = new PauseTransition(Duration.seconds(easter ? 4.0 : 2.0));
         pausa.setOnFinished(e -> {
@@ -387,7 +400,7 @@ public class GameplayController {
         pararCronometro();
 
         int tempoExtra = GerenciadorDeJogo.getInstance().consumirTempoExtra();
-        segundosRestantes = GerenciadorDeJogo.TEMPO_PADRAO_FASE + tempoExtra;
+        segundosRestantes = GerenciadorDeJogo.getInstance().getTempoDaFaseAtual() + tempoExtra;
         lblCronometro.setStyle("-fx-text-fill: #50d0ff; -fx-font-size: 32px; -fx-font-family: 'm5x7'; -fx-font-weight: bold;");
         atualizarLabelCronometro();
 
@@ -526,6 +539,22 @@ public class GameplayController {
             stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+
+            // Aplica imediatamente qualquer tempo extra comprado na loja
+            // ao cronômetro que já está em andamento. Sem isso, o valor
+            // ficava guardado em tempoExtraCronometro e só seria somado
+            // na próxima vez que iniciarCronometro() rodasse (ou seja,
+            // só ao recomeçar a fase) — fazendo parecer que a compra
+            // não tinha efeito nenhum.
+            int tempoExtra = GerenciadorDeJogo.getInstance().consumirTempoExtra();
+            if (tempoExtra > 0) {
+                segundosRestantes += tempoExtra;
+                atualizarLabelCronometro();
+                if (segundosRestantes > 10) {
+                    lblCronometro.setStyle("-fx-text-fill: #50d0ff; -fx-font-size: 32px; -fx-font-family: 'm5x7'; -fx-font-weight: bold;");
+                }
+            }
+
             // Atualiza HUD após fechar loja (pontos podem ter mudado)
             atualizarHUD();
         } catch (Exception e) {

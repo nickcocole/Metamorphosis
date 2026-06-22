@@ -19,10 +19,10 @@ public class GerenciadorDeJogo {
         return instancia;
     }
 
-    // ── Estado da partida ──────────────────────────────────────────────────
+
     private Jogador jogador;
     private Inventario inventario;
-    private int faseAtual;          // 1, 2 ou 3
+    private int faseAtual;         
     private List<Receita> receitas;
 
     // Snapshot do inventário no INÍCIO de cada fase (para reiniciar corretamente)
@@ -38,9 +38,21 @@ public class GerenciadorDeJogo {
     private static final List<String> OBJETIVOS_FASE2 = List.of("AVE ASADA", "PESCADO ASADO");
     private static final List<String> OBJETIVOS_FASE3 = List.of("CAIXÃO", "FAMÍLIA", "BUQUÊ");
 
-    // Tempo padrão de cada fase, em segundos (3 minutos)
-    public static final int TEMPO_PADRAO_FASE = 180;
-
+    public static final int TEMPO_FASE1 = 180; // 3 minutos
+    public static final int TEMPO_FASE2 = 300; // 5 minutos
+    public static final int TEMPO_FASE3 = 300; // 5 minutos
+    
+    public static final int TEMPO_PADRAO_FASE = TEMPO_FASE1;
+    
+    public int getTempoDaFaseAtual() {
+        return switch (faseAtual) {
+            case 1 -> TEMPO_FASE1;
+            case 2 -> TEMPO_FASE2;
+            case 3 -> TEMPO_FASE3;
+            default -> TEMPO_FASE1;
+        };
+    }
+    
     // ── Construtor privado ─────────────────────────────────────────────────
     private GerenciadorDeJogo() {
         inventario = new Inventario();

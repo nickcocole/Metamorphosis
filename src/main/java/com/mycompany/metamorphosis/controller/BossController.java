@@ -13,16 +13,6 @@ import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.util.Duration;
 
-/**
- * Controla o comportamento do boss Nilipe na Fase 3.
- *
- * Uso no GameplayController:
- *   BossController boss = new BossController();
- *   boss.setOnRoubo(nomeItem -> { // atualizar UI });
- *   boss.iniciar();
- *   // quando a fase acabar:
- *   boss.parar();
- */
 public class BossController implements Initializable {
 
     private Timeline timer;
@@ -61,7 +51,7 @@ public class BossController implements Initializable {
         }));
     }
 
-    // Necessário por implementar Initializable (caso seja usado via FXML)
+ 
     @Override
     public void initialize(URL url, ResourceBundle rb) { }
 }
