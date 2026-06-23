@@ -34,10 +34,8 @@ public class NomeJogadorController {
             return;
         }
 
-        // Inicia uma nova partida com o nome digitado
         GerenciadorDeJogo.getInstance().novaPartida(nome);
 
-        // Vai para a gameplay
         App.setRoot("gameplay");
     }
 }

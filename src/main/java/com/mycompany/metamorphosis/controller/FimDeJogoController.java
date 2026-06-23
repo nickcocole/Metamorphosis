@@ -36,17 +36,16 @@ public class FimDeJogoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         GerenciadorDeJogo g = GerenciadorDeJogo.getInstance();
 
-        // Nome e pontuação
         lblNomeJogador.setText(g.getJogador().getNome());
         lblPontuacao.setText(String.valueOf(g.getJogador().getPontos()));
 
-        // Imagem da Layla
+
         try {
             InputStream is = getClass().getResourceAsStream("/personagens/cigana.png");
             if (is != null) imgLayla.setImage(new Image(is));
         } catch (Exception ignored) {}
 
-        // Efeito typewriter na fala
+ 
         digitarTexto(FALA_LAYLA);
     }
 

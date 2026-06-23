@@ -15,7 +15,6 @@
 
 <VBox prefHeight="720" prefWidth="1280" style="-fx-background-color: #0d0d1a;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.metamorphosis.controller.GameplayController">
 
-    <!-- ── HUD ─────────────────────────────────────────── -->
     <HBox fx:id="hud" alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #36558b; -fx-padding: 8 16 8 16;">
 
         <Label fx:id="lblFase" style="-fx-text-fill: #dddddd; -fx-font-size: 32px; -fx-font-family: 'm5x7';" text="Fase 1" />
@@ -25,28 +24,26 @@
         <Label style="-fx-text-fill: #aaa; -fx-font-size: 32px; -fx-font-family: 'm5x7';" text="Pontos:" />
         <Label fx:id="lblPontos" style="-fx-text-fill: #50fa7b; -fx-font-size: 32px; -fx-font-family: 'm5x7';" text="0" />
         <Label style="-fx-text-fill: #222222;" text="|" />
-        <!-- Cronômetro -->
+    
         <Label style="-fx-text-fill: #aaa; -fx-font-size: 32px; -fx-font-family: 'm5x7';" text="⏱" />
         <Label fx:id="lblCronometro" style="-fx-text-fill: #50d0ff; -fx-font-size: 32px; -fx-font-family: 'm5x7'; -fx-font-weight: bold;" text="03:00" />
 
-        <!-- Empurra botões para a direita -->
         <HBox HBox.hgrow="ALWAYS" />
-        <!-- Botão Loja (visível apenas na fase 3) -->
+  
         <Button fx:id="btnLoja" managed="false" onAction="#abrirLoja" style="-fx-background-color: #7b2d8b; -fx-font-size: 28px; -fx-text-fill: #fff; -fx-font-family: 'm5x7'; -fx-cursor: hand; -fx-background-radius: 6;" text="🛒 Loja" visible="false" />
 
         
         <Button onAction="#voltar" style="-fx-background-color: #333; -fx-font-size: 32px; -fx-text-fill: #ccc; -fx-font-family: 'm5x7'; -fx-cursor: hand; -fx-background-radius: 6;" text="Menu" />
     </HBox>
 
-    <!-- ── ÁREA CENTRAL (drop zone + barra lateral) ────── -->
+
     <HBox VBox.vgrow="ALWAYS">
 
-        <!-- Área de drag-and-drop -->
+
         <AnchorPane fx:id="areaJogo" style="-fx-background-color: #d8e4f8;" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-            <!-- Os ElementoPanels são adicionados aqui pelo controller -->
+   
         </AnchorPane>
 
-        <!-- Barra lateral: itens disponíveis para arrastar para a área -->
         <VBox fx:id="barraLateral" alignment="TOP_CENTER" prefWidth="130" spacing="6" style="-fx-background-color: #243b60; -fx-padding: 10;">
             <Label style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-family: 'm5x7';" text="Elementos" />
             <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: #243b60;">
@@ -55,7 +52,6 @@
         </VBox>
     </HBox>
 
-    <!-- ── PAINEL DE DIÁLOGO (base) ────────────────────── -->
     <HBox fx:id="painelDialogo" alignment="CENTER_LEFT" prefHeight="130" spacing="12" style="-fx-background-color: #b9cff2; -fx-border-color: #113c75; -fx-border-width: 2 0 0 0; -fx-padding: 10 16 10 16;">
 
         <ImageView fx:id="imgPersonagem" fitHeight="159.0" fitWidth="150.0" preserveRatio="true" />
@@ -68,14 +64,12 @@
             <Label fx:id="lblDialogo" prefWidth="700" style="-fx-text-fill: #505050; -fx-font-size: 24px; -fx-font-family: 'm5x7';" text="" wrapText="true" />
         </VBox>
 
-        <!-- Painel de objetivos da fase -->
         <VBox alignment="TOP_LEFT" minWidth="220" spacing="4">
             <Label style="-fx-text-fill: #505050; -fx-font-size: 24px; -fx-font-family: 'm5x7';" text="• Objetivos:" />
             <VBox fx:id="painelObjetivos" prefHeight="0.0" prefWidth="220.0" spacing="2" style="-fx-background-color: #566c9b;" />
         </VBox>
     </HBox>
 
-    <!-- ── OVERLAY DE COMBINAÇÃO (aparece ao combinar) ── -->
     <StackPane fx:id="overlayCombo" managed="false" prefHeight="720" prefWidth="1280" style="-fx-background-color: rgba(0,0,0,0.75);" visible="false">
         <VBox alignment="CENTER" spacing="10">
             <Label fx:id="lblComboTitulo" style="-fx-font-size: 26px; -fx-text-fill: #f0c040; -fx-font-weight: bold;" text="✨ Novo elemento!" />
@@ -84,8 +78,7 @@
             <Label fx:id="lblComboPontos" style="-fx-font-size: 16px; -fx-text-fill: #50fa7b;" text="+500" />
         </VBox>
     </StackPane>
-    
-    <!-- ── OVERLAY TEMPO ESGOTADO ── -->
+
     <StackPane fx:id="overlayTempoEsgotado" managed="false" prefHeight="720" prefWidth="1280" style="-fx-background-color: rgba(0,0,0,0.85);" visible="false">
         <VBox alignment="CENTER" spacing="20">
             <Label style="-fx-font-size: 48px; -fx-text-fill: #ff6b6b; -fx-font-weight: bold; -fx-font-family: 'm5x7';" text="⏰ Tempo Esgotado!" />

@@ -9,11 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
-/**
- * Controla a loja de upgrades disponível na Fase 3.
- * Permite trocar pontos por: tempo extra de cronômetro,
- * proteção contra o roubo do boss Nilipe, e dicas de combinação.
- */
+
 public class LojaController implements Initializable {
 
     @FXML private Label lblPontosAtuais;

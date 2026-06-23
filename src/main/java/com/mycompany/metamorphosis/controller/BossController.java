@@ -16,20 +16,19 @@ import javafx.util.Duration;
 public class BossController implements Initializable {
 
     private Timeline timer;
-    private Consumer<String> onRoubo; // callback para a view reagir ao roubo
+    private Consumer<String> onRoubo; 
 
-    /** Define o callback chamado quando Nilipe rouba um item. */
+  
     public void setOnRoubo(Consumer<String> callback) {
         this.onRoubo = callback;
     }
 
-    /** Inicia o timer de roubo com intervalo aleatório entre 18 e 28 segundos. */
+
     public void iniciar() {
         agendarProximoRoubo();
         timer.play();
     }
 
-    /** Para o timer (chamar ao fim da fase 3 ou ao sair da gameplay). */
     public void parar() {
         if (timer != null) timer.stop();
     }
@@ -44,7 +43,6 @@ public class BossController implements Initializable {
                 Platform.runLater(() -> onRoubo.accept(roubado.getNome()));
             }
 
-            // Agenda o próximo roubo com novo intervalo
             parar();
             agendarProximoRoubo();
             timer.play();

@@ -10,14 +10,11 @@
 
 <StackPane prefHeight="720" prefWidth="1280" style="-fx-background-color: #1c2d49;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.metamorphosis.controller.FimDeJogoController">
 
-    <!-- Fundo estrelado decorativo -->
     <VBox alignment="CENTER" spacing="30">
         <padding><Insets bottom="40" left="60" right="60" top="40" /></padding>
 
-        <!-- Título -->
         <Label fx:id="lblTitulo" style="-fx-font-size: 76px; -fx-text-fill: #f0c040;   -fx-font-family: 'm5x7';  -fx-font-weight: bold;                       -fx-effect: dropshadow(gaussian, #ffaa00, 18, 0.6, 0, 0);" text="Parabéns, Alquimista!" />
 
-        <!-- Personagem + diálogo -->
         <HBox alignment="CENTER" spacing="24">
 
             <ImageView fx:id="imgLayla" fitHeight="120" fitWidth="120" preserveRatio="true" />
@@ -28,7 +25,6 @@
             </VBox>
         </HBox>
 
-        <!-- Pontuação -->
         <VBox alignment="CENTER" spacing="6" style="-fx-background-color: #243b60; -fx-background-radius: 12; -fx-border-color: #111b2c; -fx-border-radius: 12; -fx-border-width: 2; -fx-padding: 20 50 20 50;">
             <Label style="-fx-text-fill: #aaaaaa; -fx-font-size: 28px; -fx-font-family: 'm5x7';" text="Pontuação Final" />
             <Label fx:id="lblNomeJogador" style="-fx-text-fill: #ccaaff; -fx-font-size: 34px; -fx-font-family: 'm5x7';" text="" />
@@ -36,7 +32,6 @@
             <Label style="-fx-text-fill: #888888; -fx-font-size: 26px; -fx-font-family: 'm5x7';" text="pontos" />
         </VBox>
 
-        <!-- Botões -->
         <HBox alignment="CENTER" spacing="20">
             <Button onAction="#verRanking" style="-fx-background-color: #36558b; -fx-text-fill: white; -fx-font-family: 'm5x7'; -fx-font-size: 30px; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 8; -fx-padding: 12 32 12 32;" text="Ver Ranking" />
             <Button onAction="#voltarMenu" style="-fx-background-color: #333; -fx-text-fill: white; -fx-font-family: 'm5x7'; -fx-font-size: 28px; -fx-cursor: hand; -fx-background-radius: 8; -fx-padding: 12 32 12 32; -fx-border-color: #111; -fx-border-radius: 8;" text="Menu Principal" />

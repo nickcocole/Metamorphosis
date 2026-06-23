@@ -23,7 +23,6 @@
         </GridPane>
     </ScrollPane>
 
-    <!-- Detalhe do item selecionado -->
     <VBox fx:id="painelDetalhe" visible="false" managed="false" spacing="4"
           style="-fx-background-color: #2d1b4e; -fx-padding: 8; -fx-background-radius: 6;">
         <Label fx:id="lblDetalheNome"

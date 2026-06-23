@@ -86,11 +86,11 @@ public class GameplayController {
         "Meu pai se foi... Preciso preparar seu velório com dignidade. " +
         "Faça o CAIXÃO, reúna a FAMÍLIA e monte o BUQUÊ de despedida. 🕯️";
 
-    // ── Timers ───────────────────────────────────────────────────────────
+
     private Timeline timerBoss;
     private Timeline timerTexto;
 
-    // ═══════════════════════════════════════════════════════════════════════
+
     @FXML
     public void initialize() {
         atualizarHUD();
@@ -98,7 +98,7 @@ public class GameplayController {
         iniciarFase();
     }
 
-    // ── HUD ──────────────────────────────────────────────────────────────
+
     private void atualizarHUD() {
         GerenciadorDeJogo g = GerenciadorDeJogo.getInstance();
         lblFase.setText("Fase " + g.getFaseAtual());
@@ -106,7 +106,6 @@ public class GameplayController {
         lblPontos.setText(String.valueOf(g.getJogador().getPontos()));
         atualizarObjetivos();
 
-        // A loja é visível APENAS na fase 3
         boolean fase3 = g.getFaseAtual() == 3;
         btnLoja.setVisible(fase3);
         btnLoja.setManaged(fase3);
@@ -124,7 +123,7 @@ public class GameplayController {
         }
     }
 
-    // ── Barra lateral ────────────────────────────────────────────────────
+
     private void carregarElementosNaBarraLateral() {
         painelElementos.getChildren().clear();
         List<Item> itensOrdenados = new ArrayList<>(
@@ -136,7 +135,6 @@ public class GameplayController {
     }
 
     private StackPane criarCartaoElemento(Item item, boolean naBarraLateral) {
-        // Ícone
         ImageView img = new ImageView();
         img.setFitWidth(55);
         img.setFitHeight(55);
@@ -147,17 +145,14 @@ public class GameplayController {
             if (is != null) img.setImage(new Image(is));
         } catch (Exception ignored) {}
 
-        // Label nome
         Label nome = new Label(item.getNome());
         nome.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-wrap-text: true;  -fx-font-family: 'm5x7';");
         nome.setMaxWidth(70);
         nome.setAlignment(Pos.CENTER);
 
-        // Container vertical
         VBox conteudo = new VBox(4, img, nome);
         conteudo.setAlignment(Pos.CENTER);
 
-        // Card com fundo
         Rectangle bg = new Rectangle(76, 76);
         bg.setFill(Color.web("#6682b5"));
         bg.setStroke(Color.web("#4E6982"));
@@ -167,13 +162,11 @@ public class GameplayController {
 
         StackPane card = new StackPane(bg, conteudo);
         card.setCursor(Cursor.HAND);
-        card.setUserData(item.getNome()); // guarda o nome para combinar
+        card.setUserData(item.getNome()); 
 
         if (naBarraLateral) {
-            // Clique na barra → lança o elemento na área de jogo
             card.setOnMouseClicked(e -> lancarElementoNaArea(item));
         } else {
-            // Está na área → pode ser arrastado
             habilitarDrag(card);
         }
 
@@ -191,7 +184,7 @@ public class GameplayController {
         areaJogo.getChildren().add(card);
     }
 
-    // ── Drag-and-drop ────────────────────────────────────────────────────
+
      private void habilitarDrag(StackPane card) {
 
         card.setOnMousePressed(e -> {
@@ -219,7 +212,7 @@ public class GameplayController {
         card.setOnMouseReleased(e -> {
             if (elementoArrastado == null) return;
 
-            // Verifica colisão com outro card na área
+
             StackPane colisao = encontrarColisao(card);
             if (colisao != null) {
                 String nomeA = (String) card.getUserData();
@@ -245,14 +238,14 @@ public class GameplayController {
         return null;
     }
 
-    // ── Combinação ───────────────────────────────────────────────────────
+
     private void processarCombinacao(String nomeA, String nomeB,
                                      StackPane cardA, StackPane cardB) {
         if (tempoEsgotado) return;
 
         GerenciadorDeJogo g = GerenciadorDeJogo.getInstance();
 
-        // Verifica se o elemento resultante já está no inventário ANTES de combinar
+
         boolean jaExistia = g.jaConheceCombinacao(nomeA, nomeB);
 
         String resultado = g.tentarCombinar(nomeA, nomeB);
@@ -262,7 +255,7 @@ public class GameplayController {
             carregarElementosNaBarraLateral();
             atualizarHUD();
 
-            // Só mostra overlay e conta pontos se o elemento é novo
+
             if (!jaExistia) {
                 mostrarOverlayCombo(resultado);
             }
@@ -290,9 +283,7 @@ public class GameplayController {
     private void mostrarOverlayCombo(String nomeResultado) {
         boolean easter = nomeResultado.equals("AYCABRON");
 
-        // Sempre restaura o estilo padrão antes de decidir o estilo desta
-        // combinação. Sem isso, depois do primeiro Aycabron o overlay e o
-        // título ficavam roxos para sempre, mesmo em combinações normais.
+  
         overlayCombo.setStyle("-fx-background-color: rgba(0,0,0,0.75);");
         lblComboTitulo.setStyle("-fx-font-size: 26px; -fx-text-fill: #f0c040; -fx-font-weight: bold;");
 
@@ -371,7 +362,6 @@ public class GameplayController {
         pararCronometro();
         boolean avancou = GerenciadorDeJogo.getInstance().avancarFase();
         if (!avancou) {
-            // Era a última fase — vai para fim de jogo
             finalizarJogo();
             return;
         }
@@ -447,7 +437,7 @@ public class GameplayController {
         overlayTempoEsgotado.setVisible(false);
         overlayTempoEsgotado.setManaged(false);
 
-        // Restaura inventário ao estado do início da fase (sem os elementos desbloqueados nela)
+
         GerenciadorDeJogo.getInstance().reiniciarFaseAtual();
 
         areaJogo.getChildren().clear();
@@ -456,7 +446,7 @@ public class GameplayController {
         iniciarFase();
     }
 
-    // ── Boss (Fase 3) ────────────────────────────────────────────────────
+
     private void iniciarBoss() {
         agendarProximoRoubo();
     }
@@ -493,7 +483,7 @@ public class GameplayController {
         if (timerBoss != null) timerBoss.stop();
     }
 
-    // ── Diálogo typewriter ───────────────────────────────────────────────
+ 
     private void carregarPersonagem(String caminhoImg, String nome) {
         lblNomePersonagem.setText(nome);
         try {
@@ -518,7 +508,7 @@ public class GameplayController {
         timerTexto.play();
     }
 
-    // ── Botões FXML ──────────────────────────────────────────────────────
+
     @FXML
     private void voltar() throws IOException {
         pararBoss();
@@ -540,12 +530,7 @@ public class GameplayController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            // Aplica imediatamente qualquer tempo extra comprado na loja
-            // ao cronômetro que já está em andamento. Sem isso, o valor
-            // ficava guardado em tempoExtraCronometro e só seria somado
-            // na próxima vez que iniciarCronometro() rodasse (ou seja,
-            // só ao recomeçar a fase) — fazendo parecer que a compra
-            // não tinha efeito nenhum.
+
             int tempoExtra = GerenciadorDeJogo.getInstance().consumirTempoExtra();
             if (tempoExtra > 0) {
                 segundosRestantes += tempoExtra;
@@ -555,7 +540,7 @@ public class GameplayController {
                 }
             }
 
-            // Atualiza HUD após fechar loja (pontos podem ter mudado)
+
             atualizarHUD();
         } catch (Exception e) {
             e.printStackTrace();

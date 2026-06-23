@@ -106,24 +106,24 @@ public class CreditosController implements Initializable {
         subirFundo.play();
         subirCreditos.play();
         
-        // Carrega as imagens
+
         sairNormal = new Image(
                 getClass().getResourceAsStream("/stages/sairnormal.png"));
 
         sairPressionado = new Image(
                 getClass().getResourceAsStream("/stages/sairpressionado.png"));
 
-        // Define a imagem inicial
+        
         btnSair.setImage(sairNormal);
 
-        // Guarda os valores originais
+  
         double larguraOriginalSair = btnSair.getFitWidth();
         double alturaOriginalSair = btnSair.getFitHeight();
 
         double xOriginalSair = btnSair.getLayoutX();
         double yOriginalSair = btnSair.getLayoutY();
 
-        // Mouse entrou no botão
+   
         btnSair.setOnMouseEntered(e -> {
 
             btnSair.setFitWidth(larguraOriginalSair + 2);
@@ -133,7 +133,7 @@ public class CreditosController implements Initializable {
             btnSair.setLayoutY(yOriginalSair - 1);
         });
 
-        // Mouse saiu do botão
+
         btnSair.setOnMouseExited(e -> {
 
             btnSair.setFitWidth(larguraOriginalSair);
@@ -145,12 +145,12 @@ public class CreditosController implements Initializable {
             btnSair.setImage(sairNormal);
         });
 
-        // Botão pressionado
+
         btnSair.setOnMousePressed(e ->
                 btnSair.setImage(sairPressionado)
         );
 
-        // Botão solto
+
         btnSair.setOnMouseReleased(e -> {
 
             btnSair.setImage(sairNormal);

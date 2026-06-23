@@ -17,7 +17,7 @@ public class Inventario {
         return itens.stream().anyMatch(i -> i.getNome().equals(nome));
     }
 
-    /** Remove um item pelo nome. Retorna true se removeu. */
+
     public boolean remover(String nome) {
         return itens.removeIf(i -> i.getNome().equals(nome));
     }

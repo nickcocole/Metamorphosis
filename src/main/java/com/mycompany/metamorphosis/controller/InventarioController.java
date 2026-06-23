@@ -29,11 +29,9 @@ public class InventarioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lblNome.setText("🎒 Inventário");
-        // Carrega com os itens atuais do gerenciador (chamado antes de showAndWait)
         carregarItens(GerenciadorDeJogo.getInstance().getInventario().getItens());
     }
 
-    /** Chamado pelo GameplayController logo antes de abrir o modal. */
     public void carregarItens(List<Item> itens) {
         gridItens.getChildren().clear();
         int coluna = 0, linha = 0;
