@@ -35,7 +35,7 @@ import javafx.util.Duration;
 
 public class GameplayController {
 
-    // ── FXML ──────────────────────────────────────────────────────────────
+
     @FXML private Label      lblFase;
     @FXML private Label      lblJogador;
     @FXML private Label      lblPontos;
@@ -59,19 +59,18 @@ public class GameplayController {
     private double cardXInicial;
     private double cardYInicial;
 
-    // ── Drag ──────────────────────────────────────────────────────────────
+
     private StackPane elementoArrastado = null;
     private double    dragOffsetX, dragOffsetY;
 
-    // ── Flags de controle ────────────────────────────────────────────────
+
     private boolean faseJaConcluida = false;
     private boolean tempoEsgotado   = false;
 
-    // ── Cronômetro ───────────────────────────────────────────────────────
+
     private Timeline timerCronometro;
     private int segundosRestantes;
 
-    // ── Diálogos ─────────────────────────────────────────────────────────
     private static final String DIALOGO_FASE1 =
         "Olá, alquimista! Sou Layla, a cigana das estrelas. " +
         "Preciso urgentemente de um CALDEIRÃO para preparar minha poção. " +
@@ -325,7 +324,7 @@ public class GameplayController {
         p.play();
     }
 
-    // ── Fases ────────────────────────────────────────────────────────────
+    
     private void iniciarFase() {
         faseJaConcluida = false;
         tempoEsgotado    = false;
@@ -371,7 +370,6 @@ public class GameplayController {
         iniciarFase();
     }
 
-    // ── Fim de jogo ──────────────────────────────────────────────────────
     private void finalizarJogo() {
         pararBoss();
         pararCronometro();
@@ -385,7 +383,6 @@ public class GameplayController {
         }
     }
 
-    // ── Cronômetro ───────────────────────────────────────────────────────
     private void iniciarCronometro() {
         pararCronometro();
 

@@ -6,10 +6,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<!--
-    Loja da Fase 3 — o jogador troca pontos por ajudas contra o boss Nilipe.
-    Aberta como modal a partir do GameplayController.
--->
 
 <VBox prefHeight="520" prefWidth="560" spacing="16" style="-fx-background-color: #1c2d49;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.metamorphosis.controller.LojaController">
 
@@ -24,7 +20,7 @@
         <Label fx:id="lblPontosAtuais" style="-fx-text-fill: #50fa7b; -fx-font-size: 36px; -fx-font-weight: bold;  -fx-font-family: 'm5x7';" text="0" />
     </HBox>
 
-    <!-- ── Upgrade 1: Tempo extra no cronômetro ──────────────────────── -->
+  
     <VBox spacing="6" style="-fx-background-color: #b9cff2; -fx-background-radius: 10; -fx-border-color: #9b59b6; -fx-border-radius: 10; -fx-padding: 14;">
         <HBox alignment="CENTER_LEFT" spacing="10">
             <Label style="-fx-font-size: 20px;" text="⏱️" />
@@ -38,7 +34,7 @@
         <Button fx:id="btnComprarTempo" maxWidth="Infinity" onAction="#comprarTempoExtra" style="-fx-background-color: #36558b; -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 6; -fx-font-size: 24px; -fx-font-family: 'm5x7';" text="Comprar" />
     </VBox>
 
-    <!-- ── Upgrade 2: Proteção contra roubo ───────────────────────────── -->
+
     <VBox spacing="6" style="-fx-background-color: #b9cff2; -fx-background-radius: 10; -fx-border-color: #9b59b6; -fx-border-radius: 10; -fx-padding: 14;">
         <HBox alignment="CENTER_LEFT" spacing="10">
             <Label style="-fx-font-size: 20px;" text="🛡️" />
@@ -52,7 +48,7 @@
         <Button fx:id="btnComprarProtecao" maxWidth="Infinity" onAction="#comprarProtecao" style="-fx-background-color: #36558b; -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 6; -fx-font-size: 24px; -fx-font-family: 'm5x7';" text="Comprar" />
     </VBox>
 
-    <!-- ── Upgrade 3: Dica de combinação ──────────────────────────────── -->
+
     <VBox spacing="6" style="-fx-background-color: #b9cff2; -fx-background-radius: 10; -fx-border-color: #9b59b6; -fx-border-radius: 10; -fx-padding: 14;">
         <HBox alignment="CENTER_LEFT" spacing="10">
             <Label style="-fx-font-size: 20px;" text="💡" />
@@ -66,7 +62,7 @@
         <Button fx:id="btnComprarDica" maxWidth="Infinity" onAction="#comprarDica" style="-fx-background-color: #36558b; -fx-text-fill: white; -fx-cursor: hand; -fx-background-radius: 6; -fx-font-size: 24px; -fx-font-family: 'm5x7';" text="Comprar" />
     </VBox>
 
-    <!-- Mensagem de feedback (sucesso/erro) -->
+
     <Label fx:id="lblMensagem" style="-fx-text-fill: #50fa7b; -fx-font-size: 24px;  -fx-font-family: 'm5x7';" text="" wrapText="true" />
 
     <HBox HBox.hgrow="ALWAYS" />
